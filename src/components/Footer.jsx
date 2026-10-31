@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import {
   ArrowUpRight,
@@ -20,6 +21,20 @@ const footerLinks = [
 
 export default function Footer() {
   const reduce = useReducedMotion();
+  const particles = useMemo(
+    () =>
+      Array.from({ length: reduce ? 18 : 55 }, (_, i) => ({
+        id: i,
+        left: `${(i * 37.7) % 100}%`,
+        top: `${(i * 61.3) % 100}%`,
+        size: i % 9 === 0 ? 4 : i % 4 === 0 ? 3 : 1.5,
+        duration: 5 + (i % 9) * 1.7,
+        delay: (i % 13) * -0.7,
+        x: ((i * 29) % 160) - 80,
+        y: ((i * 43) % 180) - 90,
+      })),
+    [reduce]
+  );
 
   return (
     <footer className="relative isolate overflow-hidden border-t border-[#D7B36B]/20 bg-[#050403] text-[#F8F3E8]">
@@ -35,6 +50,29 @@ export default function Footer() {
           transition={{ duration: 24, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -bottom-52 -left-32 h-[390px] w-[390px] rounded-full bg-[#8B5E1B]/[0.12] blur-[110px]"
         />
+        {particles.map((p) => (
+          <motion.div
+            key={p.id}
+            className="absolute rounded-full"
+            style={{
+              left: p.left,
+              top: p.top,
+              width: p.size,
+              height: p.size,
+              background: p.id % 5 === 0 ? "#FFF1B8" : p.id % 3 === 0 ? "#F1C965" : "#BB7B24",
+              boxShadow: p.id % 5 === 0
+                ? "0 0 7px 2px rgba(255,241,184,0.8), 0 0 20px 5px rgba(241,201,101,0.3)"
+                : "0 0 8px 2px rgba(241,201,101,0.45), 0 0 18px rgba(187,123,36,0.2)",
+            }}
+            animate={reduce ? { opacity: 0.45 } : {
+              x: [0, p.x * 0.55, p.x, 0],
+              y: [0, p.y, p.y * 0.3, 0],
+              opacity: [0.12, 0.95, 0.35, 0.8, 0.12],
+              scale: [0.65, 1.35, 0.8, 1.15, 0.65],
+            }}
+            transition={{ duration: p.duration, delay: p.delay, repeat: Infinity, ease: "easeInOut" }}
+          />
+        ))}
         <div className="absolute inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(241,201,101,.35)_1px,transparent_1px),linear-gradient(90deg,rgba(241,201,101,.35)_1px,transparent_1px)] [background-size:68px_68px] [mask-image:linear-gradient(to_bottom,black,transparent_80%)]" />
         <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F1C965]/70 to-transparent" />
       </div>
