@@ -145,7 +145,7 @@ export default function Contact() {
                         type="submit"
                         className="group mt-7 inline-flex min-h-[54px] w-full items-center justify-center gap-3 rounded-sm bg-gradient-to-r from-[#BB7B24] via-[#F1C965] to-[#CD9135] px-6 text-xs font-semibold uppercase tracking-[0.18em] text-[#160F04] shadow-[0_0_25px_rgba(187,123,36,0.16)] transition-all duration-500 hover:-translate-y-0.5 hover:shadow-[0_0_35px_rgba(241,201,101,0.28)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F1C965]"
                     >
-                        Send via WhatsApp
+                        Send
                         <ArrowUpRight size={17} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                     </button>
                     <p className="mt-4 text-center text-[10px] leading-5 text-[#8E806B]">
