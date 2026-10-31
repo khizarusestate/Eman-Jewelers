@@ -25,7 +25,7 @@ export function AuthProvider({ children }) {
       if (data.user) setUser(data.user);
       return data;
     },
-    async logout() { await this.request("/api/auth/logout", { method: "POST" }); setUser(null); }
+    async logout() { const response = await fetch(`${API_URL}/api/auth/logout`, { method: "POST", credentials: "include" }); const data = await response.json().catch(() => ({})); if (!response.ok) throw new Error(data.message || "Unable to sign out."); setUser(null); return data; }
   }), [user, checking]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
