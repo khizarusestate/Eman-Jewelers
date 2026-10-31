@@ -75,7 +75,7 @@ function ImageFrame({ src, alt, className = "", delay = 0 }) {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true, amount: 0.18 }}
             transition={{ duration: 0.9, delay, ease: EASE }}
-            className={`group relative overflow-hidden bg-[#17130D] ${className}`}
+            className={`group relative overflow-hidden bg-[#17130D] shadow-[0_24px_70px_rgba(0,0,0,0.38)] ring-1 ring-[#D7B36B]/10 ${className}`}
         >
             <img
                 src={src}
@@ -97,7 +97,11 @@ export default function About() {
 
     return (
         <main className="relative overflow-hidden bg-[#080705] text-[#F8F3E8] selection:bg-[#E8C77D] selection:text-[#080705]">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] bg-[radial-gradient(ellipse_at_75%_15%,rgba(177,126,43,0.16),transparent_48%)]" />
+            {/* Ambient luxury lighting and subtle atmosphere */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-[900px] bg-[radial-gradient(ellipse_at_75%_15%,rgba(177,126,43,0.2),transparent_48%),radial-gradient(ellipse_at_12%_55%,rgba(57,83,113,0.12),transparent_42%)]" />
+            <div className="pointer-events-none absolute inset-0 opacity-[0.035] [background-image:linear-gradient(rgba(232,199,125,0.35)_1px,transparent_1px),linear-gradient(90deg,rgba(232,199,125,0.35)_1px,transparent_1px)] [background-size:72px_72px] [mask-image:linear-gradient(to_bottom,black,transparent_72%)]" />
+            <motion.div aria-hidden="true" className="pointer-events-none absolute -left-36 top-[18rem] h-[26rem] w-[26rem] rounded-full bg-[#B98536]/[0.13] blur-[105px]" animate={reduce ? {} : { x: [0, 55, 0], y: [0, 75, 0], scale: [1, 1.16, 1] }} transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.div aria-hidden="true" className="pointer-events-none absolute -right-40 top-[72rem] h-[30rem] w-[30rem] rounded-full bg-[#D9B66C]/[0.09] blur-[115px]" animate={reduce ? {} : { x: [0, -65, 0], y: [0, -80, 0], scale: [1, 1.2, 1] }} transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }} />
             <div className="pointer-events-none absolute left-[-14rem] top-[1000px] h-[32rem] w-[32rem] rounded-full bg-[#8B6126]/[0.08] blur-[120px]" />
 
             {/* Editorial hero */}
@@ -109,7 +113,7 @@ export default function About() {
                         </motion.div>
                         <motion.h1
                             variants={reveal}
-                            className="max-w-2xl font-serif text-[clamp(3.5rem,8vw,7.6rem)] font-normal leading-[0.9] tracking-[-0.065em]"
+                            className="max-w-2xl font-serif text-[clamp(2.8rem,5.8vw,5.4rem)] font-normal leading-[0.9] tracking-[-0.065em]"
                         >
                             More than
                             <span className="block pl-[0.42em] italic text-[#E8C77D]">adornment.</span>
@@ -150,7 +154,7 @@ export default function About() {
                         initial={reduce ? false : { opacity: 0, scale: 0.96, rotate: 2 }}
                         animate={{ opacity: 1, scale: 1, rotate: 0 }}
                         transition={{ duration: 1.3, ease: EASE }}
-                        className="relative ml-auto aspect-[0.82] w-[83%] overflow-hidden sm:w-[76%] lg:w-[82%]"
+                        className="relative ml-auto aspect-[0.82] shadow-[0_35px_100px_rgba(0,0,0,0.55)] ring-1 ring-[#D7B36B]/20 w-[83%] overflow-hidden sm:w-[76%] lg:w-[82%]"
                     >
                         <img
                             src="https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=1400&q=90"
@@ -167,7 +171,7 @@ export default function About() {
                         >
                             <Gem size={21} strokeWidth={1} className="text-[#E8C77D]" />
                             <div>
-                                <p className="font-serif text-lg leading-none">A lasting impression</p>
+                                <p className="font-serif text-base leading-none">A lasting impression</p>
                                 <p className="mt-1.5 text-[8px] uppercase tracking-[0.2em] text-[#B7AC98]">The Eman perspective</p>
                             </div>
                         </motion.div>
@@ -184,10 +188,10 @@ export default function About() {
                 <div className="mx-auto grid max-w-[1500px] gap-10 px-6 py-20 sm:px-10 md:py-28 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20 lg:px-16 lg:py-36">
                     <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }}>
                         <Eyebrow light>The heart of Eman</Eyebrow>
-                        <p className="font-serif text-3xl leading-tight text-[#E8C77D] sm:text-4xl">A little luxury.<br />A lifetime of meaning.</p>
+                        <p className="font-serif text-lg leading-tight text-[#E8C77D] sm:text-4xl">A little luxury.<br />A lifetime of meaning.</p>
                     </motion.div>
                     <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }}>
-                        <p className="font-serif text-[clamp(1.8rem,3.8vw,3.5rem)] leading-[1.2] tracking-[-0.035em] text-[#F8F3E8]">
+                        <p className="font-serif text-[clamp(1.45rem,2.8vw,2.7rem)] leading-[1.2] tracking-[-0.035em] text-[#F8F3E8]">
                             We see jewellery as <span className="italic text-[#E8C77D]">more than something you wear.</span> It can hold a memory, mark a new beginning, or simply remind you of who you are.
                         </p>
                         <p className="mt-7 max-w-2xl text-sm leading-7 text-[#BDB3A2]">
@@ -202,7 +206,7 @@ export default function About() {
                 <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="mb-14 flex flex-col justify-between gap-6 md:mb-20 md:flex-row md:items-end">
                     <div>
                         <Eyebrow light>What guides us</Eyebrow>
-                        <h2 className="max-w-2xl font-serif text-5xl leading-[0.98] tracking-[-0.05em] sm:text-7xl">The details make<br /><span className="italic text-[#E8C77D]">the difference.</span></h2>
+                        <h2 className="max-w-2xl font-serif text-4xl leading-[0.98] tracking-[-0.05em] sm:text-6xl">The details make<br /><span className="italic text-[#E8C77D]">the difference.</span></h2>
                     </div>
                     <p className="max-w-sm text-sm leading-7 text-[#BDB3A2]">A point of view built around beauty, meaning and the kind of care that makes choosing a piece feel special.</p>
                 </motion.div>
@@ -215,13 +219,13 @@ export default function About() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, amount: 0.2 }}
                             transition={{ duration: 0.75, delay: index * 0.12, ease: EASE }}
-                            className="group border-b border-white/10 py-8 md:border-b-0 md:border-r md:px-7 md:py-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
+                            className="group border-b border-white/10 bg-gradient-to-br from-white/[0.025] to-transparent px-4 py-8 transition-all duration-700 hover:bg-[#D7B36B]/[0.045] hover:shadow-[0_18px_55px_rgba(0,0,0,0.22)] md:px-7 md:border-b-0 md:border-r md:px-7 md:py-10 md:first:pl-0 md:last:border-r-0 md:last:pr-0"
                         >
                             <div className="flex items-center justify-between">
                                 <span className="font-serif text-sm text-[#AFA18A]">{number} / 03</span>
                                 <Icon size={22} strokeWidth={1.1} className="text-[#D7B36B] transition-transform duration-500 group-hover:rotate-[-12deg] group-hover:scale-110" />
                             </div>
-                            <h3 className="mt-10 font-serif text-2xl text-[#F8F3E8] transition-colors duration-500 group-hover:text-[#E8C77D]">{title}</h3>
+                            <h3 className="mt-10 font-serif text-lg text-[#F8F3E8] transition-colors duration-500 group-hover:text-[#E8C77D]">{title}</h3>
                             <p className="mt-4 max-w-sm text-sm leading-7 text-[#BDB3A2]">{copy}</p>
                             <div className="mt-8 h-px w-10 bg-[#D7B36B]/70 transition-all duration-700 group-hover:w-20" />
                         </motion.article>
@@ -235,7 +239,7 @@ export default function About() {
                     <motion.div variants={reveal} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mb-12 flex items-end justify-between gap-6">
                         <div>
                             <Eyebrow light>Beauty in focus</Eyebrow>
-                            <h2 className="font-serif text-5xl tracking-[-0.05em] sm:text-7xl">Look a little <span className="italic text-[#E8C77D]">closer.</span></h2>
+                            <h2 className="font-serif text-4xl tracking-[-0.05em] sm:text-6xl">Look a little <span className="italic text-[#E8C77D]">closer.</span></h2>
                         </div>
                         <Sparkles size={26} strokeWidth={1} className="mb-2 hidden text-[#D7B36B] sm:block" />
                     </motion.div>
@@ -245,7 +249,7 @@ export default function About() {
                             <div key={item.label} className={index === 1 ? "lg:mt-16" : index === 2 ? "sm:col-span-2 lg:col-span-1 lg:mt-8" : ""}>
                                 <ImageFrame src={item.src} alt={item.alt} className="aspect-[0.9] sm:aspect-[0.82] lg:aspect-[0.78]" delay={index * 0.1} />
                                 <div className="mt-4 flex items-center justify-between border-b border-white/10 pb-4">
-                                    <span className="font-serif text-xl">{item.label}</span>
+                                    <span className="font-serif text-lg">{item.label}</span>
                                     <ArrowUpRight size={16} className="text-[#D7B36B]" />
                                 </div>
                             </div>
@@ -269,7 +273,7 @@ export default function About() {
                         <Fingerprint size={23} strokeWidth={1} />
                     </div>
                     <Eyebrow light>Find your something</Eyebrow>
-                    <h2 className="font-serif text-[clamp(3rem,7.5vw,6.8rem)] leading-[0.92] tracking-[-0.06em]">Your story.<br /><span className="italic text-[#E8C77D]">Your signature.</span></h2>
+                    <h2 className="font-serif text-[clamp(2.45rem,5.6vw,5.1rem)] leading-[0.92] tracking-[-0.06em]">Your story.<br /><span className="italic text-[#E8C77D]">Your signature.</span></h2>
                     <p className="mx-auto mt-7 max-w-xl text-sm leading-7 text-[#BDB3A2]">Discover pieces that feel like you, or get in touch with our team for help finding the right one.</p>
                     <div className="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
                         <a href="/#collections" className="group inline-flex items-center justify-center gap-3 bg-[#E8C77D] px-7 py-4 text-[10px] font-medium uppercase tracking-[0.22em] text-[#100D08] transition-all duration-500 hover:bg-[#F8E5B3]">
