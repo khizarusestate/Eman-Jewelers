@@ -42,40 +42,46 @@ export default function Nav() {
 
     const closeMenu = () => setMobileOpen(false);
 
-    /* Briefly reveal the navbar on load and after each downward swipe. */
+    /* Reveal on load; on mobile, reveal only for a top-edge pull-down gesture. */
     useEffect(() => {
-        let lastScrollY = window.scrollY;
         let hideTimer;
-        const hideAfterDelay = () => {
+        let touchStartY = null;
+        const showTemporarily = () => {
             window.clearTimeout(hideTimer);
+            setNavVisible(true);
             hideTimer = window.setTimeout(() => setNavVisible(false), 2000);
         };
 
-        setNavVisible(true);
-        hideAfterDelay();
+        showTemporarily();
 
-        const onScroll = () => {
-            const currentScrollY = window.scrollY;
-            setScrolled(currentScrollY > 24);
-            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-            setScrollProgress(scrollable > 0 ? currentScrollY / scrollable : 0);
-
-            if (currentScrollY <= 8) {
-                setNavVisible(true);
-                hideAfterDelay();
-            } else if (currentScrollY > lastScrollY + 2) {
-                setNavVisible(true);
-                hideAfterDelay();
-            } else if (currentScrollY < lastScrollY - 2) {
-                window.clearTimeout(hideTimer);
-                setNavVisible(false);
+        const onTouchStart = (event) => {
+            if (window.scrollY <= 2 && event.touches.length === 1 && event.touches[0].clientY <= 28) {
+                touchStartY = event.touches[0].clientY;
+            } else {
+                touchStartY = null;
             }
-            lastScrollY = currentScrollY;
         };
 
+        const onTouchEnd = (event) => {
+            if (touchStartY === null || !event.changedTouches.length) return;
+            const distance = event.changedTouches[0].clientY - touchStartY;
+            touchStartY = null;
+            if (window.scrollY <= 2 && distance >= 65) showTemporarily();
+        };
+
+        const onScroll = () => {
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            setScrollProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
+        };
+
+        window.addEventListener("touchstart", onTouchStart, { passive: true });
+        window.addEventListener("touchend", onTouchEnd, { passive: true });
         window.addEventListener("scroll", onScroll, { passive: true });
+
         return () => {
             window.clearTimeout(hideTimer);
+            window.removeEventListener("touchstart", onTouchStart);
+            window.removeEventListener("touchend", onTouchEnd);
             window.removeEventListener("scroll", onScroll);
         };
     }, []);
@@ -162,7 +168,7 @@ export default function Nav() {
             <motion.header
                 animate={{ y: navVisible && !mobileOpen ? "0%" : "-110%" }}
                 transition={{ duration: 0.55, ease: EASE }}
-                className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b border-transparent bg-transparent shadow-none backdrop-blur-none`}
+                className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${scrolled || mobileOpen ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl" : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"}` }
             >
 
                                 {/* Main Navbar */}
