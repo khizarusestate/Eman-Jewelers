@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { UserRound, MapPin, ShieldCheck, LogOut, Trash2, Save, LockKeyhole, Gem } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/ToastProvider";
 export default function Account() {
- const { user, request, logout, checking, setUser } = useAuth(); const toast = useToast(); const navigate = useNavigate();
+ const { user, request, logout, checking, setUser } = useAuth(); const toast = useToast();
  const [form,setForm]=useState({name:"",phone:"",address:"",city:"",country:"Pakistan"});
  const [passwords,setPasswords]=useState({currentPassword:"",newPassword:"",confirmPassword:""});
  const [deletePassword,setDeletePassword]=useState(""); const [busy,setBusy]=useState(false);
  useEffect(()=>{if(user)setForm({name:user.name||"",phone:user.phone||"",address:user.address||"",city:user.city||"",country:user.country||"Pakistan"});},[user]);
- useEffect(()=>{if(!checking&&!user)navigate("/login",{replace:true});},[checking,user,navigate]);
+ useEffect(()=>{if(!checking&&!user)window.location.replace("/login");},[checking,user,navigate]);
  if(checking||!user)return <main className="min-h-screen bg-[#080705] pt-40 text-center text-[#D7B36B]">Loading your account...</main>;
  const update = e=>setForm({...form,[e.target.name]:e.target.value});
  const save = async e=>{e.preventDefault();setBusy(true);try{await request("/api/auth/profile",{method:"PUT",body:JSON.stringify(form)});toast("Your profile has been saved.","success");}catch(err){toast(err.message,"error");}finally{setBusy(false);}};
  const changePassword=async e=>{e.preventDefault();setBusy(true);try{await request("/api/auth/password",{method:"PUT",body:JSON.stringify(passwords)});setPasswords({currentPassword:"",newPassword:"",confirmPassword:""});toast("Password changed successfully.","success");}catch(err){toast(err.message,"error");}finally{setBusy(false);}};
- const removeAccount=async e=>{e.preventDefault();if(!window.confirm("This permanently deletes your customer account. This action cannot be undone. Continue?"))return;setBusy(true);try{const result=await request("/api/auth/account",{method:"DELETE",body:JSON.stringify({password:deletePassword})});setUser(null);toast(result.message,"success");navigate("/");}catch(err){toast(err.message,"error");}finally{setBusy(false);}};
+ const removeAccount=async e=>{e.preventDefault();if(!window.confirm("This permanently deletes your customer account. This action cannot be undone. Continue?"))return;setBusy(true);try{const result=await request("/api/auth/account",{method:"DELETE",body:JSON.stringify({password:deletePassword})});setUser(null);toast(result.message,"success");window.location.assign("/");}catch(err){toast(err.message,"error");}finally{setBusy(false);}};
  const input=(name,label,type="text")=><label className="block"><span className="mb-2 block text-[10px] uppercase tracking-[.18em] text-[#C7A76A]">{label}</span><input name={name} type={type} value={form[name]??""} onChange={update} className="w-full rounded-xl border border-[#B98536]/25 bg-black/30 px-4 py-3 text-sm text-[#FFF4D9] outline-none focus:border-[#E8C46F]/70"/></label>;
  return <main className="min-h-screen bg-[#080705] px-5 pb-24 pt-32 text-[#FFF4D9]"><div className="mx-auto max-w-6xl"><div className="mb-10 flex flex-wrap items-end justify-between gap-5"><div><p className="text-[10px] uppercase tracking-[.28em] text-[#BB8B3B]">My account</p><h1 className="mt-2 font-serif text-4xl sm:text-5xl">Hello, {user.name.split(" ")[0]}.</h1><p className="mt-3 text-sm text-[#B9AA91]">Manage your personal details and account security.</p></div><button onClick={async()=>{try{await logout();toast("You have been logged out.","success");navigate("/");}catch(e){toast(e.message,"error");}}} className="inline-flex items-center gap-2 rounded-full border border-[#B98536]/40 px-5 py-3 text-xs uppercase tracking-widest text-[#E8C46F] hover:bg-[#F1C965]/10"><LogOut size={16}/> Sign out</button></div>
  <div className="grid gap-6 lg:grid-cols-[.7fr_1.3fr]"><aside className="h-fit rounded-2xl border border-[#B98536]/25 bg-[#100D08] p-6"><div className="mb-5 flex h-14 w-14 items-center justify-center rounded-full border border-[#D7B36B]/40 bg-[#F1C965]/10"><UserRound className="text-[#F1C965]"/></div><h2 className="font-serif text-2xl">{user.name}</h2><p className="mt-1 break-all text-sm text-[#B9AA91]">{user.email}</p><div className="my-6 h-px bg-[#B98536]/20"/><p className="flex items-center gap-2 text-xs text-[#C7A76A]"><ShieldCheck size={16}/> Customer account</p><p className="mt-5 text-[10px] uppercase tracking-widest text-[#8E7957]">Member since</p><p className="mt-1 text-sm text-[#D8C8A9]">{new Date(user.createdAt).toLocaleDateString()}</p></aside>
