@@ -3,7 +3,6 @@ import {
   ArrowUpRight,
   Gem,
   Heart,
-  Instagram,
   MessageCircle,
   ShieldCheck,
   Sparkles,
@@ -51,8 +50,6 @@ export default function Footer() {
         >
           <div className="max-w-3xl">
             <div className="mb-5 flex items-center gap-3 text-[9px] font-medium uppercase tracking-[0.34em] text-[#D9B879] sm:text-[10px]">
-              <Sparkles size={14} strokeWidth={1.3} />
-              A little something extraordinary
             </div>
             <h2 className="font-serif text-[clamp(2.4rem,6vw,5.4rem)] font-normal leading-[0.95] tracking-[-0.055em]">
               Beauty that stays.
@@ -79,7 +76,7 @@ export default function Footer() {
           <div className="max-w-sm">
             <a href="/" aria-label="Eman Jewelers home" className="group inline-flex items-center gap-3">
               <span className="flex h-12 w-12 items-center justify-center rounded-full border border-[#D7B36B]/45 bg-[#F1C965]/[0.05] text-[#E8C77D] transition-all duration-500 group-hover:border-[#F1C965] group-hover:shadow-[0_0_25px_rgba(241,201,101,0.16)]">
-                <Gem size={23} strokeWidth={1.1} />
+                <img src="/images/Logo.png" alt="" className="h-10 w-10 object-contain transition-transform duration-500 group-hover:scale-105" />
               </span>
               <span>
                 <span className="block font-serif text-[25px] leading-none tracking-[-0.035em] text-[#F8F0E1]">Eman Jewelers</span>
