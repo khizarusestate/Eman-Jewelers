@@ -27,12 +27,17 @@ export default function Nav() {
     const [searchOpen, setSearchOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [scrollProgress, setScrollProgress] = useState(0);
 
     const closeMenu = () => setMobileOpen(false);
 
     /* Header gets denser once the page scrolls */
     useEffect(() => {
-        const onScroll = () => setScrolled(window.scrollY > 24);
+        const onScroll = () => {
+            setScrolled(window.scrollY > 24);
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            setScrollProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
+        };
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
@@ -117,14 +122,14 @@ export default function Nav() {
             >
 
                 {/* Main Navbar */}
-                <nav className="max-w-[1450px] mx-auto h-[75px] px-6 lg:px-12 flex items-center justify-between nav-enter">
+                <nav className="relative mx-auto flex h-[75px] max-w-[1450px] items-center justify-between px-6 nav-enter before:pointer-events-none before:absolute before:inset-x-6 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#D7B36B]/20 before:to-transparent lg:px-12">
 
                     {/* Logo */}
-                    <a href="#home" className="shrink-0 group">
+                    <a href="/" aria-label="Eman Jewelers home" className="group relative shrink-0">
                         <img
                             src="/images/Logo.png"
                             alt="Eman Jewelers"
-                            className="h-[69px] w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:drop-shadow-[0_0_15px_rgba(241,201,101,0.4)]"
+                            className="h-[62px] w-auto object-contain transition-all duration-700 group-hover:scale-[1.04] group-hover:drop-shadow-[0_0_18px_rgba(241,201,101,0.5)] lg:h-[66px]"
                         />
                     </a>
 
