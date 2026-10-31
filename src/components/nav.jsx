@@ -132,15 +132,13 @@ export default function Nav() {
                 }
             `}</style>
 
-            <header
-                className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${
-                    scrolled || mobileOpen
-                        ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl"
-                        : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"
-                }`}
+            <motion.header
+                animate={{ y: scrolled && !mobileOpen ? "-110%" : "0%" }}
+                transition={{ duration: 0.42, ease: EASE }}
+                className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b border-transparent bg-transparent shadow-none backdrop-blur-none`}
             >
 
-                {/* Main Navbar */}
+                                {/* Main Navbar */}
                 <nav className="relative mx-auto flex h-[75px] max-w-[1450px] items-center justify-between px-6 nav-enter before:pointer-events-none before:absolute before:inset-x-6 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#D7B36B]/20 before:to-transparent lg:px-12">
 
                     {/* Logo */}
@@ -257,7 +255,7 @@ export default function Nav() {
                 )}
 
                 
-            </header>
+            </motion.header>
 
             {contactOpen && <Contact onClose={() => setContactOpen(false)} />}
 
