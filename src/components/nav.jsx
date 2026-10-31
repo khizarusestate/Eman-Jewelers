@@ -157,6 +157,7 @@ export default function Nav() {
                                 <li key={link.name}>
                                     <a
                                         href={link.href}
+                                        onClick={link.name === "Contact" ? (event) => { event.preventDefault(); setContactOpen(true); } : undefined}
                                         className={textCss}
                                     >
                                         {link.name}
