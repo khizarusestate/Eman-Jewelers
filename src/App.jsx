@@ -54,7 +54,7 @@ function AppContent() {
     };
     const handleBackForward = () => {
       const nextPath = normalizePath(window.location.pathname);
-      if (!ROUTES.has(nextPath)) return;
+      if (!isKnownRoute(nextPath)) return;
       setPath(nextPath);
       if (nextPath !== path) {
         setLoading(true);
