@@ -273,30 +273,43 @@ export default function Nav() {
                         transition={{ duration: 0.5, ease: EASE }}
                         className="fixed inset-x-0 bottom-0 top-[75px] z-40 flex flex-col overflow-y-auto border-t border-[#BB7B24]/20 bg-[#050403]/80 backdrop-blur-2xl lg:hidden"
                     >
-                        {/* Ambient glow */}
+                        {/* Distinctive mobile-only atmosphere */}
                         <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                            <div className="absolute -left-24 top-[8%] h-72 w-72 rounded-full bg-[#A76A16]/20 blur-[90px]" />
-                            <div className="absolute -right-24 bottom-[12%] h-72 w-72 rounded-full bg-[#F1C965]/10 blur-[90px]" />
+                            <div className="absolute -inset-6 scale-105 bg-cover bg-center opacity-20 blur-[10px]" style={{ backgroundImage: "url('/images/Home.png')" }} />
+                            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,4,3,0.76),rgba(5,4,3,0.92)_48%,rgba(5,4,3,0.98))]" />
+                            <motion.div animate={{ opacity: [0.15, 0.45, 0.15], scale: [0.9, 1.15, 0.9] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} className="absolute -left-24 top-[8%] h-72 w-72 rounded-full bg-[#A76A16]/30 blur-[90px]" />
+                            <motion.div animate={{ opacity: [0.08, 0.3, 0.08], scale: [1.1, 0.9, 1.1] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }} className="absolute -right-24 bottom-[12%] h-72 w-72 rounded-full bg-[#F1C965]/20 blur-[90px]" />
+                            <div className="absolute inset-0 opacity-[0.045] [background-image:linear-gradient(rgba(241,201,101,.5)_1px,transparent_1px),linear-gradient(90deg,rgba(241,201,101,.5)_1px,transparent_1px)] [background-size:44px_44px]" />
                         </div>
 
-                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-8 pt-3 sm:px-7 sm:pt-4">
+                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-5 pb-8 pt-5 sm:px-7 sm:pt-6">
+                            {/* Brand plate */}
+                            <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, ease: EASE }} className="mb-6 flex items-center gap-3 rounded-2xl border border-[#D7B36B]/25 bg-black/35 p-3 shadow-[0_10px_35px_rgba(0,0,0,0.22)] backdrop-blur-xl">
+                                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-xl border border-[#D7B36B]/35 bg-gradient-to-br from-[#F1C965]/15 to-transparent p-1 shadow-[0_0_25px_rgba(241,201,101,0.10)]">
+                                    <img src="/images/Logo.png" alt="Eman Jewelers logo" className="h-full w-full object-contain" />
+                                </span>
+                                <span className="min-w-0 flex-1">
+                                    <span className="block font-serif text-xl tracking-wide text-[#FFF4D7]">Eman Jewelers</span>
+                                    <span className="mt-1 block text-[9px] uppercase tracking-[0.24em] text-[#C49A50]">Fine jewellery · Timeless radiance</span>
+                                </span>
+                                <Gem size={18} strokeWidth={1.2} className="shrink-0 text-[#F1C965] drop-shadow-[0_0_10px_rgba(241,201,101,0.7)]" />
+                            </motion.div>
 
-                            <motion.ul variants={listVariants} initial="hidden" animate="show">
-                                {navLinks.map((link) => (
+                            <motion.ul variants={listVariants} initial="hidden" animate="show" className="grid grid-cols-2 gap-3">
+                                {navLinks.map((link, index) => (
                                     <motion.li key={link.name} variants={itemVariants}>
                                         <a
                                             href={link.href}
                                             onClick={link.name === "Contact" ? (event) => { event.preventDefault(); closeMenu(); setContactOpen(true); } : closeMenu}
-                                            className="group flex items-center justify-between border-b border-[#BB7B24]/15 py-4 font-serif text-[1.45rem] leading-tight tracking-[-0.02em] text-[#FFF9EA] transition-colors duration-500 hover:text-[#F1C965] active:text-[#F1C965] sm:py-[1.05rem] sm:text-[1.65rem]"
+                                            className="group relative flex min-h-[112px] flex-col justify-between overflow-hidden rounded-2xl border border-[#D7B36B]/20 bg-gradient-to-br from-[#F1C965]/[0.09] via-black/35 to-black/55 p-4 shadow-[inset_0_1px_0_rgba(255,241,184,0.06)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-[#F1C965]/60 hover:shadow-[0_10px_35px_rgba(187,123,36,0.12)] active:scale-[0.98]"
                                         >
-                                            <span className="transition-transform duration-500 group-hover:translate-x-1.5">
-                                                {link.name}
+                                            <span className="absolute -right-5 -top-5 h-16 w-16 rounded-full bg-[#F1C965]/10 blur-2xl transition-opacity group-hover:opacity-100" />
+                                            <span className="relative flex items-center justify-between">
+                                                <span className="text-[9px] uppercase tracking-[0.22em] text-[#B78B42]">0{index + 1}</span>
+                                                <ArrowUpRight size={17} strokeWidth={1.4} className="text-[#C99C50] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#FFF1B8]" />
                                             </span>
-                                            <ArrowUpRight
-                                                size={20}
-                                                strokeWidth={1.4}
-                                                className="text-[#BB7B24] transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#F1C965]"
-                                            />
+                                            <span className="relative font-serif text-[1.35rem] leading-tight tracking-[-0.025em] text-[#FFF9EA] transition-colors group-hover:text-[#F1C965]">{link.name}</span>
+                                            <span className="relative mt-2 h-px w-8 bg-gradient-to-r from-[#F1C965]/70 to-transparent transition-all duration-500 group-hover:w-14" />
                                         </a>
                                     </motion.li>
                                 ))}
