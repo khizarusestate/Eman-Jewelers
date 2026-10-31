@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const ShopContext = createContext(null);
 const readStored = (key, fallback) => {
@@ -32,7 +32,7 @@ export function ShopProvider({ children }) {
   const removeFromCart = id => setCart(current => current.filter(item => item.id !== Number(id)));
   const toggleWishlist = id => setWishlist(current => current.includes(Number(id)) ? current.filter(item => item !== Number(id)) : [...current, Number(id)]);
   const removeFromWishlist = id => setWishlist(current => current.filter(item => item !== Number(id)));
-  const value = useMemo(() => ({ cart, wishlist, addToCart, setQuantity, removeFromCart, toggleWishlist, removeFromWishlist, cartCount: cart.reduce((sum, item) => sum + item.quantity, 0) }), [cart, wishlist]);
+  const value = { cart, wishlist, addToCart, setQuantity, removeFromCart, toggleWishlist, removeFromWishlist, cartCount: cart.reduce((sum, item) => sum + item.quantity, 0) };
   return <ShopContext.Provider value={value}>{children}</ShopContext.Provider>;
 }
 export function useShop() {
