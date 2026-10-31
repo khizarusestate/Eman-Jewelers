@@ -1,1 +1,7 @@
 @import 'tailwindcss';
+
+/* Custom golden cursor — only on devices with a real mouse (set by Cursor) */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
