@@ -64,10 +64,10 @@ export default function Nav() {
     }, [mobileOpen]);
 
     const navLinks = [
-        { name: "Home", href: "#home" },
-        { name: "About", href: "#about" },
-        { name: "Collections", href: "#collections" },
-        { name: "Contact", href: "#contact" }
+        { name: "Home", href: "/" },
+        { name: "About", href: "/about" },
+        { name: "Collections", href: "/#collections" },
+        { name: "Contact", href: "/#contact" }
     ];
 
     const textCss = "relative inline-block bg-gradient-to-b from-[#FFF1B8] via-[#F1C965] to-[#BB7B24] bg-clip-text text-transparent font-semibold tracking-wide cursor-pointer drop-shadow-[0_1px_2px_rgba(187,123,36,0.4)] transition-all duration-500 ease-out hover:-translate-y-1 hover:brightness-125 hover:drop-shadow-[0_0_12px_rgba(241,201,101,0.65)] after:content-[''] after:absolute after:left-1/2 after:-bottom-2 after:-translate-x-1/2 after:h-[2px] after:w-0 after:rounded-full after:bg-gradient-to-r after:from-[#BB7B24] after:via-[#FFF1B8] after:to-[#BB7B24] after:shadow-[0_0_8px_rgba(241,201,101,0.55)] after:transition-all after:duration-500 after:ease-out hover:after:w-full ";
