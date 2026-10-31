@@ -1,7 +1,17 @@
 @import 'tailwindcss';
 
-/* Custom golden cursor — only on devices with a real mouse (set by Cursor) */
-html.has-custom-cursor,
-html.has-custom-cursor * {
-  cursor: none !important;
+/* Simple black cursor (thin gold edge so it stays visible on the dark theme) */
+html,
+body {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4 2 L4 19 L8.5 15 L11.5 22 L14.5 20.7 L11.6 14 L17.5 14 Z' fill='%23000' stroke='%23F1C965' stroke-width='1.2' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, auto;
+}
+
+a,
+button,
+summary,
+select,
+label[for],
+[role="button"],
+.cursor-pointer {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpath d='M4 2 L4 19 L8.5 15 L11.5 22 L14.5 20.7 L11.6 14 L17.5 14 Z' fill='%23000' stroke='%23FFF1B8' stroke-width='1.8' stroke-linejoin='round'/%3E%3C/svg%3E") 4 2, pointer !important;
 }
