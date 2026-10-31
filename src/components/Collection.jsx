@@ -59,7 +59,26 @@ export default function Collection() {
                   <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.055]" />
                 </button>
                 <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-[#17130D]/15 via-transparent to-white/5 opacity-35 transition-opacity duration-500 group-hover:opacity-55" />
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] opacity-[0.14] mix-blend-multiply" style={{ backgroundImage: "radial-gradient(circle at 12% 18%, rgba(185,133,54,.9) 0 1px, transparent 1.8px), radial-gradient(circle at 78% 14%, rgba(185,133,54,.8) 0 1px, transparent 1.9px), radial-gradient(circle at 88% 42%, rgba(185,133,54,.75) 0 1px, transparent 1.8px), radial-gradient(circle at 18% 72%, rgba(185,133,54,.8) 0 1px, transparent 1.8px), radial-gradient(circle at 68% 84%, rgba(185,133,54,.85) 0 1px, transparent 1.9px), radial-gradient(circle at 42% 34%, rgba(255,255,255,.9) 0 1px, transparent 2px)" }} />
+                <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] overflow-hidden">
+                  {[
+                    { left: "12%", top: "18%", delay: 0 },
+                    { left: "78%", top: "14%", delay: 0.7 },
+                    { left: "88%", top: "42%", delay: 1.3 },
+                    { left: "18%", top: "72%", delay: 0.4 },
+                    { left: "68%", top: "84%", delay: 1.1 },
+                    { left: "42%", top: "34%", delay: 1.7 },
+                    { left: "55%", top: "62%", delay: 0.9 },
+                    { left: "30%", top: "48%", delay: 1.5 },
+                  ].map((particle, particleIndex) => (
+                    <motion.span
+                      key={particleIndex}
+                      className="absolute block h-[3px] w-[3px] rounded-full bg-[#D7A94F] shadow-[0_0_6px_1px_rgba(185,133,54,0.65)]"
+                      style={{ left: particle.left, top: particle.top }}
+                      animate={reduceMotion ? { opacity: 0.42 } : { y: [0, -4, 1, 0], opacity: [0.25, 0.68, 0.35, 0.25], scale: [0.8, 1.25, 0.9, 0.8] }}
+                      transition={{ duration: 3.8, delay: particle.delay, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  ))}
+                </div>
                 <div aria-hidden="true" className="pointer-events-none absolute inset-[5px] z-[4] border border-white/35" />
                 {product.tag && <span className="pointer-events-none absolute left-2.5 top-2.5 z-[5] bg-[#F7F3EA]/90 px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#78531F] backdrop-blur-md sm:left-4 sm:top-4 sm:text-[9px]">{product.tag}</span>}
                 <button type="button" onClick={() => toggleWishlist(product.id)} aria-label={favorites.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={favorites.includes(product.id)} className={`absolute right-2.5 top-2.5 z-[6] flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10 ${favorites.includes(product.id) ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/85 text-[#30271A] hover:scale-105 hover:bg-white"}`}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} strokeWidth={1.6} /></button>
