@@ -14,7 +14,8 @@ export default function AuthPage({ mode = "login" }) {
     try {
       await request(`/api/auth/${isRegister ? "register" : "login"}`, { method: "POST", body: JSON.stringify(form) });
       toast(isRegister ? "Your account has been created. Welcome to Eman Jewelers." : "Welcome back. You are now signed in.", "success");
-      window.location.assign("/account");
+      window.history.pushState({}, "", "/account");
+      window.dispatchEvent(new PopStateEvent("popstate"));
     } catch (error) { toast(error.message, "error"); } finally { setBusy(false); }
   };
   const field = (name, label, type = "text", required = false) => <label className="block"><span className="mb-2 block text-[10px] uppercase tracking-[.2em] text-[#C7A76A]">{label}</span><input name={name} type={type} required={required} value={form[name]} onChange={change} autoComplete={name === "password" ? (isRegister ? "new-password" : "current-password") : name === "email" ? "email" : "on"} className="w-full rounded-xl border border-[#B98536]/25 bg-black/30 px-4 py-3.5 text-sm text-[#FFF4D9] outline-none transition focus:border-[#E8C46F]/70 focus:ring-2 focus:ring-[#E8C46F]/10" /></label>;
