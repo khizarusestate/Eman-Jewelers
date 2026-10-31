@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "./ToastProvider";
+import { useShop } from "../context/ShopContext";
 import Contact from "./contact";
 import {
     Search,
@@ -31,6 +32,7 @@ export default function Nav() {
     const [contactOpen, setContactOpen] = useState(false);
     const { user, logout } = useAuth();
     const toast = useToast();
+    const { cartCount, wishlist } = useShop();
     const isAuthenticated = Boolean(user);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -300,10 +302,12 @@ export default function Nav() {
                                 initial={{ opacity: 0, y: 18 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-                                className={`mt-9 grid ${isAuthenticated ? "grid-cols-3" : "grid-cols-2"} gap-3`}
+                                className="mt-9 grid grid-cols-2 gap-5 sm:grid-cols-3"
                             >
                                 {[
                                     { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
+                                    { label: "Wishlist", Icon: Heart, href: "/wishlist" },
+                                    { label: `Bag (${cartCount})`, Icon: ShoppingBag, href: "/cart" },
                                     ...(isAuthenticated ? [
                                         { label: "Account", Icon: UserRound, href: "/account" },
                                         { label: "Sign out", Icon: LogOut, onClick: async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } } },
