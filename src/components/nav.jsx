@@ -175,6 +175,8 @@ export default function Nav() {
                         <div className="flex items-center gap-7">
 
                             <button
+                            <a href="/wishlist" aria-label={`Wishlist, ${wishlist.length} saved items`} title="Wishlist" className={`${iconCss} relative`}><Heart size={21} strokeWidth={1.6}/>{wishlist.length > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{wishlist.length}</span>}</a>
+                            <a href="/cart" aria-label={`Shopping bag, ${cartCount} items`} title="Shopping bag" className={`${iconCss} relative`}><ShoppingBag size={21} strokeWidth={1.6}/>{cartCount > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{cartCount}</span>}</a>
                                 onClick={() => setSearchOpen(!searchOpen)}
                                 aria-label="Search"
                                 className={iconCss}
