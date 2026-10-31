@@ -25,6 +25,9 @@ const itemVariants = {
 
 export default function Nav() {
     const [searchOpen, setSearchOpen] = useState(false);
+    const [joinOpen, setJoinOpen] = useState(false);
+    // Authentication will be connected to the backend when its API is ready.
+    const [isAuthenticated] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [scrollProgress, setScrollProgress] = useState(0);
@@ -172,30 +175,15 @@ export default function Nav() {
                                 <Search size={21} strokeWidth={1.6} />
                             </button>
 
-                            <a
-                                href="/wishlist"
-                                aria-label="Wishlist"
-                                className={iconCss}
-                            >
-                                <Heart size={21} strokeWidth={1.6} />
-                            </a>
-
-                            <a
-                                href="/account"
-                                aria-label="Account"
-                                className={iconCss}
-                            >
-                                <UserRound size={21} strokeWidth={1.6} />
-                            </a>
-
-                            <a
-                                href="/cart"
-                                aria-label="Shopping Bag"
-                                className={`relative ${iconCss}`}
-                            >
-                                <ShoppingBag size={22} strokeWidth={1.6} />
-                            </a>
-
+                            {isAuthenticated ? (
+                                <>
+                                    <a href="/wishlist" aria-label="Wishlist" className={iconCss}><Heart size={21} strokeWidth={1.6} /></a>
+                                    <a href="/account" aria-label="Account" className={iconCss}><UserRound size={21} strokeWidth={1.6} /></a>
+                                    <a href="/cart" aria-label="Shopping Bag" className={`relative ${iconCss}`}><ShoppingBag size={22} strokeWidth={1.6} /></a>
+                                </>
+                            ) : (
+                                <button type="button" onClick={() => setJoinOpen(true)} className="rounded-full border border-[#D7B36B]/55 bg-gradient-to-r from-[#F1C965]/10 to-[#BB7B24]/10 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-[#F1C965] shadow-[0_0_18px_rgba(241,201,101,0.08)] transition-all duration-500 hover:border-[#F1C965] hover:bg-[#F1C965]/15 hover:shadow-[0_0_22px_rgba(241,201,101,0.2)]">Join Us</button>
+                            )}
                         </div>
                     </div>
 
@@ -260,6 +248,21 @@ export default function Nav() {
                 
             </header>
 
+            <AnimatePresence>
+                {joinOpen && (
+                    <motion.div className="fixed inset-0 z-[120] flex items-center justify-center bg-black/75 px-5 backdrop-blur-md" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onMouseDown={(event) => { if (event.target === event.currentTarget) setJoinOpen(false); }}>
+                        <motion.div role="dialog" aria-modal="true" aria-labelledby="join-title" className="relative w-full max-w-md overflow-hidden rounded-2xl border border-[#D7B36B]/30 bg-[#0B0906] p-8 text-center shadow-[0_20px_80px_rgba(0,0,0,0.65)]" initial={{ opacity: 0, y: 18, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 12 }}>
+                            <button type="button" onClick={() => setJoinOpen(false)} aria-label="Close" className="absolute right-4 top-4 text-[#C9A45D] transition hover:text-white"><X size={20} /></button>
+                            <Gem size={25} className="mx-auto mb-5 text-[#F1C965]" strokeWidth={1.3} />
+                            <p className="mb-2 text-[10px] uppercase tracking-[0.28em] text-[#BB8B3B]">Eman Jewelers</p>
+                            <h2 id="join-title" className="font-serif text-3xl text-[#FFF1C7]">Your account awaits</h2>
+                            <p className="mx-auto mt-4 max-w-xs text-sm leading-6 text-[#B9AA91]">Customer sign-in and registration are being prepared. Your account will let you manage your profile, wishlist and orders.</p>
+                            <button type="button" onClick={() => setJoinOpen(false)} className="mt-7 rounded-full border border-[#D7B36B]/50 px-7 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#F1C965] transition hover:bg-[#F1C965]/10">Got it</button>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             {/* Mobile Navigation — overlays Home, Home itself never moves */}
             <AnimatePresence>
                 {mobileOpen && (
@@ -310,9 +313,13 @@ export default function Nav() {
                             >
                                 {[
                                     { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
-                                    { label: "Wishlist", Icon: Heart, href: "/wishlist" },
-                                    { label: "Account", Icon: UserRound, href: "/account" },
-                                    { label: "Bag", Icon: ShoppingBag, href: "/cart" },
+                                    ...(isAuthenticated ? [
+                                        { label: "Wishlist", Icon: Heart, href: "/wishlist" },
+                                        { label: "Account", Icon: UserRound, href: "/account" },
+                                        { label: "Bag", Icon: ShoppingBag, href: "/cart" },
+                                    ] : [
+                                        { label: "Join Us", Icon: UserRound, onClick: () => { setJoinOpen(true); closeMenu(); } },
+                                    ]),
                                 ].map((item) => {
                                     const { label, Icon, href, onClick } = item;
                                     const inner = (
