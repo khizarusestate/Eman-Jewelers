@@ -300,9 +300,8 @@ export default function Nav() {
                                 {[
                                     { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
                                     ...(isAuthenticated ? [
-                                        { label: "Wishlist", Icon: Heart, href: "/wishlist" },
                                         { label: "Account", Icon: UserRound, href: "/account" },
-                                        { label: "Bag", Icon: ShoppingBag, href: "/cart" },
+                                        { label: "Sign out", Icon: LogOut, onClick: async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } } },
                                     ] : [
                                         { label: "Join Us", Icon: UserRound, href: "/register" },
                                     ]),
