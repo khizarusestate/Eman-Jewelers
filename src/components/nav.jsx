@@ -133,7 +133,7 @@ export default function Nav() {
             `}</style>
 
             <header
-                className={`fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+                className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${
                     scrolled || mobileOpen
                         ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl"
                         : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"
@@ -261,113 +261,66 @@ export default function Nav() {
 
             {contactOpen && <Contact onClose={() => setContactOpen(false)} />}
 
-            {/* Mobile Navigation — overlays Home, Home itself never moves */}
+            {/* Compact mobile side drawer; leaves part of the page visible */}
             <AnimatePresence>
                 {mobileOpen && (
                     <motion.div
-                        key="mobile-menu"
-                        id="mobile-menu"
-                        initial={{ opacity: 0, y: -14 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -14 }}
-                        transition={{ duration: 0.5, ease: EASE }}
-                        className="fixed inset-x-0 bottom-0 top-[75px] z-40 flex flex-col overflow-y-auto border-t border-[#BB7B24]/20 bg-[#050403]/80 backdrop-blur-2xl lg:hidden"
+                        key="mobile-menu-shell"
+                        className="fixed inset-0 z-[60] lg:hidden"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.25 }}
                     >
-                        {/* Distinctive mobile-only atmosphere */}
-                        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-                            <div className="absolute -inset-6 scale-105 bg-cover bg-center opacity-20 blur-[10px]" style={{ backgroundImage: "url('/images/Home.png')" }} />
-                            <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(5,4,3,0.76),rgba(5,4,3,0.92)_48%,rgba(5,4,3,0.98))]" />
-                            <motion.div animate={{ opacity: [0.15, 0.45, 0.15], scale: [0.9, 1.15, 0.9] }} transition={{ duration: 7, repeat: Infinity, ease: "easeInOut" }} className="absolute -left-24 top-[8%] h-72 w-72 rounded-full bg-[#A76A16]/30 blur-[90px]" />
-                            <motion.div animate={{ opacity: [0.08, 0.3, 0.08], scale: [1.1, 0.9, 1.1] }} transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }} className="absolute -right-24 bottom-[12%] h-72 w-72 rounded-full bg-[#F1C965]/20 blur-[90px]" />
-                            <div className="absolute inset-0 opacity-[0.045] [background-image:linear-gradient(rgba(241,201,101,.5)_1px,transparent_1px),linear-gradient(90deg,rgba(241,201,101,.5)_1px,transparent_1px)] [background-size:44px_44px]" />
-                        </div>
-
-                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-8 pt-5 sm:px-8 sm:pt-6">
-                            {/* Brand plate */}
-                            <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, ease: EASE }} className="mb-7 flex items-center justify-between gap-3 border-b border-[#D7B36B]/25 pb-5">
-                                <span className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-[#D7B36B]/45 bg-black/30 p-1.5 shadow-[0_0_24px_rgba(241,201,101,0.12)]">
-                                    <img src="/images/Logo.png" alt="Eman Jewelers logo" className="h-full w-full object-contain" />
-                                </span>
-                                <span className="min-w-0 flex-1">
-                                    <span className="block font-serif text-xl tracking-wide text-[#FFF4D7]">Eman Jewelers</span>
-                                    <span className="mt-1 block text-[9px] uppercase tracking-[0.2em] text-[#C49A50]">Fine jewellery · Timeless radiance</span>
-                                </span>
-                                <Gem size={18} strokeWidth={1.2} className="shrink-0 text-[#F1C965] drop-shadow-[0_0_10px_rgba(241,201,101,0.7)]" />
-                            </motion.div>
-
-                            <motion.ul variants={listVariants} initial="hidden" animate="show" className="relative flex flex-col">
-                                {navLinks.map((link, index) => (
-                                    <motion.li key={link.name} variants={itemVariants}>
-                                        <a
-                                            href={link.href}
-                                            onClick={link.name === "Contact" ? (event) => { event.preventDefault(); closeMenu(); setContactOpen(true); } : closeMenu}
-                                            className="group flex min-h-[66px] items-center justify-between border-b border-[#D7B36B]/15 py-4 text-[#FFF9EA] transition-colors duration-300 active:text-[#F1C965]"
-                                        >
-                                            <span className="flex items-center gap-5"><span className="w-5 font-mono text-[10px] tracking-widest text-[#A67A35]">0{index + 1}</span><span className="font-serif text-[1.5rem] leading-tight tracking-[-0.02em] transition-transform duration-300 group-hover:translate-x-1 group-hover:text-[#F1C965]">{link.name}</span></span>
-                                            <ArrowUpRight size={19} strokeWidth={1.3} className="text-[#BB7B24] transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#FFF1B8]" />
-                                        </a>
-                                    </motion.li>
-                                ))}
-                            </motion.ul>
-
-                            {/* Quick actions */}
-                            <motion.div
-                                initial={{ opacity: 0, y: 18 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-                                className="mt-7 grid grid-cols-3 gap-x-3 gap-y-5 sm:mt-9 sm:gap-x-5 sm:gap-y-6"
-                            >
-                                {[
-                                    { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
-                                    { label: "Wishlist", Icon: Heart, href: "/wishlist" },
-                                    { label: `Bag (${cartCount})`, Icon: ShoppingBag, href: "/cart" },
-                                    ...(isAuthenticated ? [
-                                        { label: "Account", Icon: UserRound, href: "/account" },
-                                        { label: "Sign out", Icon: LogOut, onClick: async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } } },
-                                    ] : [
-                                        { label: "Join Us", Icon: UserRound, href: "/register" },
-                                    ]),
-                                ].map((item) => {
-                                    const { label, Icon, href, onClick } = item;
-                                    const inner = (
-                                        <>
-                                            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#BB7B24]/40 bg-[#F1C965]/[0.04] text-[#F1C965] transition-all duration-500 group-hover:border-[#F1C965]/80 group-hover:bg-[#F1C965]/10 group-hover:shadow-[0_0_22px_rgba(241,201,101,0.3)] sm:h-[52px] sm:w-[52px]">
-                                                <Icon size={18} strokeWidth={1.5} />
-                                            </span>
-                                            <span className="text-[10px] tracking-wide text-[#A99A83] transition-colors duration-500 group-hover:text-[#F1C965] sm:text-[11px]">
-                                                {label}
-                                            </span>
-                                        </>
-                                    );
-                                    const cls = "group flex min-h-[76px] flex-col items-center gap-2 sm:min-h-[84px] sm:gap-2.5";
-                                    return href ? (
-                                        <a key={label} href={href} onClick={closeMenu} className={cls}>
-                                            {inner}
-                                        </a>
-                                    ) : (
-                                        <button key={label} onClick={onClick} aria-label={label} className={cls}>
-                                            {inner}
-                                        </button>
-                                    );
-                                })}
-                            </motion.div>
-
-                            {/* Signature */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 1, delay: 0.7 }}
-                                className="mt-auto flex flex-col items-center gap-3 pt-12"
-                            >
-                                <div className="flex w-full max-w-[220px] items-center gap-3">
-                                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#BB7B24]/70" />
-                                    <Gem size={14} strokeWidth={1.3} className="text-[#F1C965] drop-shadow-[0_0_8px_rgba(241,201,101,0.7)]" />
-                                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#BB7B24]/70" />
+                        <button type="button" aria-label="Close menu overlay" onClick={closeMenu} className="absolute inset-0 h-full w-full bg-black/45 backdrop-blur-[2px]" />
+                        <motion.aside
+                            id="mobile-menu"
+                            initial={{ x: "-100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "-100%" }}
+                            transition={{ duration: 0.42, ease: EASE }}
+                            className="absolute inset-y-0 left-0 flex w-[78vw] max-w-[320px] flex-col overflow-y-auto rounded-br-[100px] border-r border-[#D7B36B]/30 bg-[#080705] shadow-[18px_0_55px_rgba(0,0,0,0.45)]"
+                        >
+                            <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+                                <div className="absolute -inset-8 scale-105 bg-cover bg-center opacity-20 blur-[12px]" style={{ backgroundImage: "url('/images/Home.png')" }} />
+                                <div className="absolute inset-0 bg-[linear-gradient(145deg,rgba(8,7,5,0.72),rgba(8,7,5,0.94)_70%,rgba(22,14,5,0.98))]" />
+                                <div className="absolute -right-28 bottom-[5%] h-72 w-72 rounded-full bg-[#F1C965]/15 blur-[90px]" />
+                            </div>
+                            <div className="relative flex min-h-full flex-col px-6 pb-8 pt-7">
+                                <div className="mb-8 flex items-center justify-between gap-3 border-b border-[#D7B36B]/25 pb-5">
+                                    <a href="/" onClick={closeMenu} aria-label="Eman Jewelers home" className="flex min-w-0 items-center gap-3">
+                                        <img src="/images/Logo.png" alt="Eman Jewelers logo" className="h-11 w-11 shrink-0 rounded-full border border-[#D7B36B]/40 object-contain p-1" />
+                                        <span className="min-w-0">
+                                            <span className="block font-serif text-base tracking-wide text-[#FFF4D7]">Eman Jewelers</span>
+                                            <span className="mt-1 block text-[8px] uppercase tracking-[0.16em] text-[#C49A50]">Timeless radiance</span>
+                                        </span>
+                                    </a>
+                                    <button type="button" onClick={closeMenu} aria-label="Close menu" className="shrink-0 px-1 py-2 text-[9px] tracking-[0.15em] text-[#F1C965] transition hover:text-[#FFF1B8]">CLOSE</button>
                                 </div>
-                                <p className="font-serif text-lg text-[#CD9135]">Eman Jewelers</p>
-                                <p className="text-[11px] tracking-wide text-[#A99A83]">Fine gold and diamond jewellery</p>
-                            </motion.div>
-                        </div>
+
+                                <motion.ul variants={listVariants} initial="hidden" animate="show" className="flex flex-col">
+                                    {navLinks.map((link) => (
+                                        <motion.li key={link.name} variants={itemVariants}>
+                                            <a href={link.href} onClick={link.name === "Contact" ? (event) => { event.preventDefault(); closeMenu(); setContactOpen(true); } : closeMenu} className="group flex min-h-[48px] items-center border-b border-[#D7B36B]/15 py-3 text-[#FFF9EA] transition-colors duration-300 hover:text-[#F1C965]">
+                                                <span className="font-serif text-[1.02rem] leading-tight tracking-[-0.01em] transition-transform duration-300 group-hover:translate-x-1">{link.name}</span>
+                                            </a>
+                                        </motion.li>
+                                    ))}
+                                </motion.ul>
+
+                                <div className="relative mt-6 flex flex-col items-start gap-3 text-[10px] tracking-wide text-[#BCA477]">
+                                    <button type="button" onClick={() => { setSearchOpen(true); closeMenu(); }} className="transition hover:text-[#FFF1B8]">Search jewellery</button>
+                                    <a href="/wishlist" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Wishlist</a>
+                                    <a href="/cart" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Shopping bag</a>
+                                    {isAuthenticated ? <><a href="/account" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">My account</a><button type="button" onClick={async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } }} className="transition hover:text-[#FFF1B8]">Sign out</button></> : <><a href="/login" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Login</a><a href="/register" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Join Us</a></>}
+                                </div>
+
+                                <div className="relative mt-auto pt-10">
+                                    <div className="mb-3 h-px w-16 bg-gradient-to-r from-[#F1C965]/70 to-transparent" />
+                                    <p className="font-serif text-sm text-[#CD9135]">Fine gold & diamonds</p>
+                                </div>
+                            </div>
+                        </motion.aside>
                     </motion.div>
                 )}
             </AnimatePresence>
