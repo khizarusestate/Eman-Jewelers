@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import About from "./components/about";
+import Collection from "./components/Collection";
 import Home from "./components/home";
 import Nav from "./components/nav";
 import Preloader from "./components/preloader";
@@ -67,9 +68,11 @@ function AppContent() {
     };
   }, [path]);
 
+  const page = path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" /> : path === "/account" ? <Account /> : <><Home /><Collection /></>;
+
   return <>
     <Nav />
-    {path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" /> : path === "/account" ? <Account /> : <Home />}
+    {page}
     <Preloader visible={loading} />
   </>;
 }
