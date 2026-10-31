@@ -196,24 +196,6 @@ export default function Nav() {
                         </div>
                     </div>
 
-                    {/* Mobile Action Icons */}
-                    <div className="mr-3 flex items-center gap-4 lg:hidden">
-                        <a href="/wishlist" aria-label={`Wishlist, ${wishlist.length} saved items`} title="Wishlist" onClick={closeMenu} className={`${iconCss} relative`}>
-                            <Heart size={20} strokeWidth={1.6} />
-                            {wishlist.length > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{wishlist.length}</span>}
-                        </a>
-                        <a href="/cart" aria-label={`Shopping bag, ${cartCount} items`} title="Shopping bag" onClick={closeMenu} className={`${iconCss} relative`}>
-                            <ShoppingBag size={20} strokeWidth={1.6} />
-                            {cartCount > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{cartCount}</span>}
-                        </a>
-                        <button type="button" onClick={() => { setSearchOpen((open) => !open); setMobileOpen(false); }} aria-label="Search" aria-expanded={searchOpen} className={iconCss}>
-                            <Search size={20} strokeWidth={1.6} />
-                        </button>
-                        <a href={isAuthenticated ? "/account" : "/login"} aria-label={isAuthenticated ? "My account" : "Login"} title={isAuthenticated ? "My account" : "Login"} onClick={closeMenu} className={iconCss}>
-                            <UserRound size={20} strokeWidth={1.6} />
-                        </a>
-                    </div>
-
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => {
@@ -311,7 +293,7 @@ export default function Nav() {
                                             <span className="mt-1 block text-[8px] uppercase tracking-[0.16em] text-[#C49A50]">Timeless radiance</span>
                                         </span>
                                     </a>
-                                    <button type="button" onClick={closeMenu} aria-label="Close menu" className="shrink-0 px-1 py-2 text-[9px] tracking-[0.15em] text-[#F1C965] transition hover:text-[#FFF1B8]">CLOSE</button>
+                                    <button type="button" onClick={closeMenu} aria-label="Close menu" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-[#D7B36B]/30 text-[#F1C965] transition hover:border-[#F1C965]/70 hover:bg-[#F1C965]/10 hover:text-[#FFF1B8]"><X size={18} strokeWidth={1.7} /></button>
                                 </div>
 
                                 <motion.ul variants={listVariants} initial="hidden" animate="show" className="flex flex-col">
@@ -324,11 +306,11 @@ export default function Nav() {
                                     ))}
                                 </motion.ul>
 
-                                <div className="relative mt-6 flex flex-col items-start gap-3 text-[10px] tracking-wide text-[#BCA477]">
-                                    <button type="button" onClick={() => { setSearchOpen(true); closeMenu(); }} className="transition hover:text-[#FFF1B8]">Search jewellery</button>
-                                    <a href="/wishlist" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Wishlist</a>
-                                    <a href="/cart" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Shopping bag</a>
-                                    {isAuthenticated ? <><a href="/account" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">My account</a><button type="button" onClick={async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } }} className="transition hover:text-[#FFF1B8]">Sign out</button></> : <><a href="/login" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Login</a><a href="/register" onClick={closeMenu} className="transition hover:text-[#FFF1B8]">Join Us</a></>}
+                                <div className="relative mt-6 flex flex-col items-start gap-4 text-[11px] tracking-wide text-[#BCA477]">
+                                    <button type="button" onClick={() => { setSearchOpen(true); closeMenu(); }} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><Search size={17} strokeWidth={1.6} />Search jewellery</button>
+                                    <a href="/wishlist" onClick={closeMenu} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><Heart size={17} strokeWidth={1.6} />Wishlist{wishlist.length > 0 && <span className="rounded-full bg-[#F1C965]/15 px-2 py-0.5 text-[9px] text-[#F1C965]">{wishlist.length}</span>}</a>
+                                    <a href="/cart" onClick={closeMenu} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><ShoppingBag size={17} strokeWidth={1.6} />Shopping bag{cartCount > 0 && <span className="rounded-full bg-[#F1C965]/15 px-2 py-0.5 text-[9px] text-[#F1C965]">{cartCount}</span>}</a>
+                                    {isAuthenticated ? <><a href="/account" onClick={closeMenu} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><UserRound size={17} strokeWidth={1.6} />My account</a><button type="button" onClick={async () => { try { await logout(); toast("You have been signed out.", "success"); closeMenu(); } catch (error) { toast(error.message, "error"); } }} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><LogOut size={17} strokeWidth={1.6} />Sign out</button></> : <><a href="/login" onClick={closeMenu} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><UserRound size={17} strokeWidth={1.6} />Login</a><a href="/register" onClick={closeMenu} className="flex items-center gap-3 transition hover:text-[#FFF1B8]"><ArrowUpRight size={17} strokeWidth={1.6} />Join Us</a></>}
                                 </div>
 
                                 <div className="relative mt-auto pt-10">
