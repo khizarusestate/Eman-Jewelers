@@ -1,0 +1,36 @@
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
+const AuthContext = createContext(null);
+export const API_URL = (import.meta.env.VITE_API_URL || "http://localhost:5000").replace(/\/$/, "");
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null);
+  const [checking, setChecking] = useState(true);
+  useEffect(() => {
+    let active = true;
+    fetch(`${API_URL}/api/auth/me`, { credentials: "include" })
+      .then(async r => { const data = await r.json(); if (!r.ok) throw new Error(data.message); return data; })
+      .then(data => { if (active) setUser(data.user); })
+      .catch(() => { if (active) setUser(null); })
+      .finally(() => { if (active) setChecking(false); });
+    return () => { active = false; };
+  }, []);
+  const value = useMemo(() => ({
+    user, setUser, checking, apiUrl: API_URL,
+    async request(path, options = {}) {
+      const response = await fetch(`${API_URL}${path}`, {
+        ...options, credentials: "include",
+        headers: { ...(options.body ? { "Content-Type": "application/json" } : {}), ...options.headers }
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.message || "Something went wrong. Please try again.");
+      if (data.user) setUser(data.user);
+      return data;
+    },
+    async logout() { await this.request("/api/auth/logout", { method: "POST" }); setUser(null); }
+  }), [user, checking]);
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+}
+export const useAuth = () => {
+  const value = useContext(AuthContext);
+  if (!value) throw new Error("useAuth must be used inside AuthProvider");
+  return value;
+};
