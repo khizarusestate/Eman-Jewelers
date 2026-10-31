@@ -56,29 +56,11 @@ export default function Collection() {
             {shown.map((product, index) => <motion.article layout key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.045, ease }} className="group min-w-0">
               <div className="relative aspect-[4/5] overflow-hidden border border-[#B98536]/40 bg-[#EAE3D5] shadow-[0_8px_24px_rgba(65,45,18,0.08),inset_0_0_0_1px_rgba(255,255,255,0.45)]">
                 <button type="button" onClick={() => setSelectedProduct((current) => current === product.id ? null : product.id)} aria-expanded={selectedProduct === product.id} aria-label={`Show purchase options for ${product.name}`} className="absolute inset-0 z-[1] h-full w-full cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-[#B98536]">
-                  <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.055]" />
+                  <img src={product.image} alt={product.name} loading="lazy" className="h-full w-full object-cover saturate-[1.12] contrast-[1.06] brightness-[1.02] sepia-[0.07] transition-[filter,transform] duration-700 ease-out group-hover:scale-[1.045] group-hover:saturate-[1.2] group-hover:contrast-[1.08] group-hover:brightness-[1.06] group-hover:sepia-[0.03]" />
                 </button>
                 <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-[#17130D]/15 via-transparent to-white/5 opacity-35 transition-opacity duration-500 group-hover:opacity-55" />
-                <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] overflow-hidden">
-                  {[
-                    { left: "12%", top: "18%", delay: 0 },
-                    { left: "78%", top: "14%", delay: 0.7 },
-                    { left: "88%", top: "42%", delay: 1.3 },
-                    { left: "18%", top: "72%", delay: 0.4 },
-                    { left: "68%", top: "84%", delay: 1.1 },
-                    { left: "42%", top: "34%", delay: 1.7 },
-                    { left: "55%", top: "62%", delay: 0.9 },
-                    { left: "30%", top: "48%", delay: 1.5 },
-                  ].map((particle, particleIndex) => (
-                    <motion.span
-                      key={particleIndex}
-                      className="absolute block h-[3px] w-[3px] rounded-full bg-[#D7A94F] shadow-[0_0_6px_1px_rgba(185,133,54,0.65)]"
-                      style={{ left: particle.left, top: particle.top }}
-                      animate={reduceMotion ? { opacity: 0.42 } : { y: [0, -4, 1, 0], opacity: [0.25, 0.68, 0.35, 0.25], scale: [0.8, 1.25, 0.9, 0.8] }}
-                      transition={{ duration: 3.8, delay: particle.delay, repeat: Infinity, ease: "easeInOut" }}
-                    />
-                  ))}
-                </div>
+                <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-[3] bg-[radial-gradient(ellipse_at_50%_0%,rgba(255,239,199,0.2),transparent_52%),linear-gradient(145deg,rgba(255,255,255,0.12),transparent_38%,rgba(91,57,16,0.08))] mix-blend-soft-light" />
+                <div aria-hidden="true" className="pointer-events-none absolute -inset-y-1/2 -left-1/2 z-[3] w-1/2 rotate-[18deg] bg-gradient-to-r from-transparent via-white/25 to-transparent opacity-0 blur-md transition-all duration-1000 ease-out group-hover:left-[130%] group-hover:opacity-100" />
                 <div aria-hidden="true" className="pointer-events-none absolute inset-[5px] z-[4] border border-white/35" />
                 {product.tag && <span className="pointer-events-none absolute left-2.5 top-2.5 z-[5] bg-[#F7F3EA]/90 px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#78531F] backdrop-blur-md sm:left-4 sm:top-4 sm:text-[9px]">{product.tag}</span>}
                 <button type="button" onClick={() => toggleWishlist(product.id)} aria-label={favorites.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={favorites.includes(product.id)} className={`absolute right-2.5 top-2.5 z-[6] flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10 ${favorites.includes(product.id) ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/85 text-[#30271A] hover:scale-105 hover:bg-white"}`}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} strokeWidth={1.6} /></button>
