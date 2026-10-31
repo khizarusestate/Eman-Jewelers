@@ -37,20 +37,47 @@ export default function Nav() {
     const isAuthenticated = Boolean(user);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [navVisible, setNavVisible] = useState(true);
     const [scrollProgress, setScrollProgress] = useState(0);
 
     const closeMenu = () => setMobileOpen(false);
 
-    /* Header gets denser once the page scrolls */
+    /* Briefly reveal the navbar on load and after each downward swipe. */
     useEffect(() => {
-        const onScroll = () => {
-            setScrolled(window.scrollY > 24);
-            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-            setScrollProgress(scrollable > 0 ? window.scrollY / scrollable : 0);
+        let lastScrollY = window.scrollY;
+        let hideTimer;
+        const hideAfterDelay = () => {
+            window.clearTimeout(hideTimer);
+            hideTimer = window.setTimeout(() => setNavVisible(false), 2000);
         };
-        onScroll();
+
+        setNavVisible(true);
+        hideAfterDelay();
+
+        const onScroll = () => {
+            const currentScrollY = window.scrollY;
+            setScrolled(currentScrollY > 24);
+            const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+            setScrollProgress(scrollable > 0 ? currentScrollY / scrollable : 0);
+
+            if (currentScrollY <= 8) {
+                setNavVisible(true);
+                hideAfterDelay();
+            } else if (currentScrollY > lastScrollY + 2) {
+                setNavVisible(true);
+                hideAfterDelay();
+            } else if (currentScrollY < lastScrollY - 2) {
+                window.clearTimeout(hideTimer);
+                setNavVisible(false);
+            }
+            lastScrollY = currentScrollY;
+        };
+
         window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
+        return () => {
+            window.clearTimeout(hideTimer);
+            window.removeEventListener("scroll", onScroll);
+        };
     }, []);
 
     /* Mobile menu: lock page scroll, close on Escape or when resizing to desktop */
@@ -133,8 +160,8 @@ export default function Nav() {
             `}</style>
 
             <motion.header
-                animate={{ y: scrolled && !mobileOpen ? "-110%" : "0%" }}
-                transition={{ duration: 0.42, ease: EASE }}
+                animate={{ y: navVisible && !mobileOpen ? "0%" : "-110%" }}
+                transition={{ duration: 0.55, ease: EASE }}
                 className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b border-transparent bg-transparent shadow-none backdrop-blur-none`}
             >
 
