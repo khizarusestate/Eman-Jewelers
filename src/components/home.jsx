@@ -312,7 +312,7 @@ export default function Home() {
                             </motion.a>
 
                             <motion.a
-                                href="#about"
+                                href="/about"
                                 whileHover={{ scale: 1.035, y: -3 }}
                                 whileTap={{ scale: 0.97 }}
                                 className="group relative inline-flex min-h-[52px] items-center justify-center gap-3 rounded-sm border border-[#BB7B24]/45 bg-white/[0.015] px-7 py-3.5 text-xs font-medium uppercase tracking-[0.16em] text-[#F1C965] backdrop-blur-sm transition-all duration-500 hover:border-[#F1C965]/80 hover:bg-[#F1C965]/[0.07] hover:shadow-[0_0_30px_rgba(241,201,101,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F1C965] sm:px-8"
