@@ -20,3 +20,30 @@ label[for],
 html {
   scroll-padding-top: 75px;
 }
+
+
+/* Custom champagne-gold browser scrollbar */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: #B98536 #100D08;
+}
+
+html::-webkit-scrollbar {
+  width: 10px;
+}
+
+html::-webkit-scrollbar-track {
+  background: #100D08;
+  border-left: 1px solid rgba(215, 179, 107, 0.08);
+}
+
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #F4D990 0%, #B98536 48%, #704515 100%);
+  border: 2px solid #100D08;
+  border-radius: 999px;
+  box-shadow: 0 0 10px rgba(215, 179, 107, 0.25);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #FFF1B8 0%, #E2B95E 50%, #A66B22 100%);
+}
