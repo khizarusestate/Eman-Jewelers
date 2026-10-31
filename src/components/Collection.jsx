@@ -18,7 +18,7 @@ const ease = [0.16, 1, 0.3, 1];
 
 export default function Collection() {
   const [active, setActive] = useState("All Pieces");
-  const { wishlist: favorites, addToCart, toggleWishlist, cartCount } = useShop();
+  const { wishlist: favorites, cart, addToCart, toggleWishlist, cartCount } = useShop();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const [cartMessage, setCartMessage] = useState("");
@@ -30,6 +30,7 @@ export default function Collection() {
     addToCart(product.id, 1);
     setCartMessage(product.name);
   };
+  const isInCart = (productId) => cart.some((item) => item.id === productId);
 
   return (
     <section id="collections" className="relative isolate scroll-mt-20 overflow-hidden bg-[#F7F3EA] text-[#17130D]">
@@ -62,7 +63,7 @@ export default function Collection() {
                 <button type="button" onClick={() => toggleWishlist(product.id)} aria-label={favorites.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={favorites.includes(product.id)} className={`absolute right-2.5 top-2.5 z-[4] flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10 ${favorites.includes(product.id) ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/85 text-[#30271A] hover:scale-105 hover:bg-white"}`}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} strokeWidth={1.6} /></button>
                 <AnimatePresence>
                   {selectedProduct === product.id && <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.25 }} className="absolute inset-x-2 bottom-2 z-[5] flex flex-col gap-2 sm:inset-x-4 sm:bottom-4">
-                    <button type="button" onClick={() => addProductToCart(product)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#17130D]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F8E9BE] shadow-lg backdrop-blur-md transition-colors hover:bg-[#59401F] sm:text-[10px]"><ShoppingBag size={13} /> {"Add to cart"}</button>
+                    {!isInCart(product.id) ? <button type="button" onClick={() => addProductToCart(product)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#17130D]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F8E9BE] shadow-lg backdrop-blur-md transition-colors hover:bg-[#59401F] sm:text-[10px]"><ShoppingBag size={13} /> Add to cart</button> : <a href="/cart" onClick={() => setSelectedProduct(null)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#F7F3EA]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#3E2B12] shadow-lg backdrop-blur-md sm:text-[10px]"><ShoppingBag size={13} /> In bag · View</a>}
                     <a href={`/product/${product.id}`} onClick={() => setSelectedProduct(null)} className="flex min-h-10 items-center justify-center bg-[#F7F3EA]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#3E2B12] shadow-lg backdrop-blur-md transition-colors hover:bg-white sm:text-[10px]">Buy now</a>
                     <button type="button" onClick={() => setSelectedProduct(null)} aria-label="Close purchase options" className="absolute -right-1 -top-[6.5rem] flex h-7 w-7 items-center justify-center rounded-full border border-white/70 bg-[#F7F3EA]/95 text-[#30271A] shadow-md sm:-right-2 sm:-top-[6.5rem]"><X size={14} /></button>
                   </motion.div>}
