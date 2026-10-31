@@ -277,7 +277,7 @@ export default function Nav() {
                             <div className="absolute -right-24 bottom-[12%] h-72 w-72 rounded-full bg-[#F1C965]/10 blur-[90px]" />
                         </div>
 
-                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-7 pb-8 pt-4">
+                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-6 pb-8 pt-3 sm:px-7 sm:pt-4">
 
                             <motion.ul variants={listVariants} initial="hidden" animate="show">
                                 {navLinks.map((link) => (
@@ -285,7 +285,7 @@ export default function Nav() {
                                         <a
                                             href={link.href}
                                             onClick={link.name === "Contact" ? (event) => { event.preventDefault(); closeMenu(); setContactOpen(true); } : closeMenu}
-                                            className="group flex items-center justify-between border-b border-[#BB7B24]/15 py-[1.15rem] font-serif text-[1.9rem] leading-none tracking-[-0.02em] text-[#FFF9EA] transition-colors duration-500 hover:text-[#F1C965] active:text-[#F1C965]"
+                                            className="group flex items-center justify-between border-b border-[#BB7B24]/15 py-4 font-serif text-[1.45rem] leading-tight tracking-[-0.02em] text-[#FFF9EA] transition-colors duration-500 hover:text-[#F1C965] active:text-[#F1C965] sm:py-[1.05rem] sm:text-[1.65rem]"
                                         >
                                             <span className="transition-transform duration-500 group-hover:translate-x-1.5">
                                                 {link.name}
@@ -305,7 +305,7 @@ export default function Nav() {
                                 initial={{ opacity: 0, y: 18 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
-                                className="mt-9 grid grid-cols-2 gap-5 sm:grid-cols-3"
+                                className="mt-7 grid grid-cols-3 gap-x-3 gap-y-5 sm:mt-9 sm:gap-x-5 sm:gap-y-6"
                             >
                                 {[
                                     { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
@@ -321,15 +321,15 @@ export default function Nav() {
                                     const { label, Icon, href, onClick } = item;
                                     const inner = (
                                         <>
-                                            <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[#BB7B24]/40 bg-[#F1C965]/[0.04] text-[#F1C965] transition-all duration-500 group-hover:border-[#F1C965]/80 group-hover:bg-[#F1C965]/10 group-hover:shadow-[0_0_22px_rgba(241,201,101,0.3)]">
-                                                <Icon size={21} strokeWidth={1.5} />
+                                            <span className="flex h-11 w-11 items-center justify-center rounded-full border border-[#BB7B24]/40 bg-[#F1C965]/[0.04] text-[#F1C965] transition-all duration-500 group-hover:border-[#F1C965]/80 group-hover:bg-[#F1C965]/10 group-hover:shadow-[0_0_22px_rgba(241,201,101,0.3)] sm:h-[52px] sm:w-[52px]">
+                                                <Icon size={18} strokeWidth={1.5} />
                                             </span>
-                                            <span className="text-[11px] tracking-wide text-[#A99A83] transition-colors duration-500 group-hover:text-[#F1C965]">
+                                            <span className="text-[10px] tracking-wide text-[#A99A83] transition-colors duration-500 group-hover:text-[#F1C965] sm:text-[11px]">
                                                 {label}
                                             </span>
                                         </>
                                     );
-                                    const cls = "group flex flex-col items-center gap-2.5";
+                                    const cls = "group flex min-h-[76px] flex-col items-center gap-2 sm:min-h-[84px] sm:gap-2.5";
                                     return href ? (
                                         <a key={label} href={href} onClick={closeMenu} className={cls}>
                                             {inner}
