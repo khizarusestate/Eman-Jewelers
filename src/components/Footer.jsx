@@ -40,6 +40,18 @@ export default function Footer() {
     <footer className="relative isolate overflow-hidden border-t border-[#D7B36B]/20 bg-[#050403] text-[#F8F3E8]">
       {/* Ambient gold atmosphere */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+        {/* Soft-focus signature jewel image, with a dark veil to keep footer copy readable */}
+        <motion.div
+          className="absolute -inset-6 scale-[1.04] bg-cover bg-center bg-no-repeat blur-[12px]"
+          style={{
+            backgroundImage: "url('/images/Home.png')",
+            opacity: 0.28,
+            mixBlendMode: "screen",
+          }}
+          animate={reduce ? {} : { scale: [1.04, 1.09, 1.04], opacity: [0.22, 0.31, 0.22] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(5,4,3,0.88)_0%,rgba(5,4,3,0.72)_48%,rgba(5,4,3,0.84)_100%)]" />
         <motion.div
           animate={reduce ? {} : { x: [0, 70, -30, 0], y: [0, -25, 30, 0], scale: [1, 1.12, 0.96, 1] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
