@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ArrowRight, Heart, Sparkles, ShoppingBag, X } from "lucide-react";
+import { Heart, ShoppingBag, X } from "lucide-react";
 
 const filters = ["All Pieces", "Rings", "Necklaces", "Earrings", "Bracelets"];
 const products = [
@@ -63,7 +63,7 @@ export default function Collection() {
                 <AnimatePresence>
                   {selectedProduct === product.id && <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.25 }} className="absolute inset-x-2 bottom-2 z-[5] flex flex-col gap-2 sm:inset-x-4 sm:bottom-4">
                     <button type="button" onClick={() => addToCart(product)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#17130D]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F8E9BE] shadow-lg backdrop-blur-md transition-colors hover:bg-[#59401F] sm:text-[10px]"><ShoppingBag size={13} /> {cart.includes(product.id) ? "Add another" : "Add to cart"}</button>
-                    <a href="/#contact" onClick={() => setSelectedProduct(null)} className="flex min-h-10 items-center justify-center bg-[#F7F3EA]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#3E2B12] shadow-lg backdrop-blur-md transition-colors hover:bg-white sm:text-[10px]">Buy now</a>
+                    <a href={`/product/${product.id}`} onClick={() => setSelectedProduct(null)} className="flex min-h-10 items-center justify-center bg-[#F7F3EA]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#3E2B12] shadow-lg backdrop-blur-md transition-colors hover:bg-white sm:text-[10px]">Buy now</a>
                     <button type="button" onClick={() => setSelectedProduct(null)} aria-label="Close purchase options" className="absolute -right-1 -top-[6.5rem] flex h-7 w-7 items-center justify-center rounded-full border border-white/70 bg-[#F7F3EA]/95 text-[#30271A] shadow-md sm:-right-2 sm:-top-[6.5rem]"><X size={14} /></button>
                   </motion.div>}
                 </AnimatePresence>
