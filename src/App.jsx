@@ -3,6 +3,7 @@ import About from "./components/about";
 import Collection from "./components/Collection";
 import Home from "./components/home";
 import Nav from "./components/nav";
+import Footer from "./components/Footer";
 import Preloader from "./components/preloader";
 import AuthPage from "./pages/AuthPage";
 import Account from "./pages/Account";
@@ -79,6 +80,7 @@ function AppContent() {
   return <>
     <Nav />
     {page}
+    <Footer />
     <Preloader visible={loading} />
   </>;
 }
