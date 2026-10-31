@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Heart, ShoppingBag, X } from "lucide-react";
+import { useShop } from "../context/ShopContext";
 
 const filters = ["All Pieces", "Rings", "Necklaces", "Earrings", "Bracelets"];
 const products = [
@@ -17,8 +18,7 @@ const ease = [0.16, 1, 0.3, 1];
 
 export default function Collection() {
   const [active, setActive] = useState("All Pieces");
-  const [favorites, setFavorites] = useState([]);
-  const [cart, setCart] = useState([]);
+  const { wishlist: favorites, cart, addToCart, toggleWishlist, cartCount } = useShop();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const [cartMessage, setCartMessage] = useState("");
@@ -26,8 +26,8 @@ export default function Collection() {
   const filtered = active === "All Pieces" ? products : products.filter((p) => p.category === active);
   const shown = showAll ? filtered : filtered.slice(0, 4);
 
-  const addToCart = (product) => {
-    setCart((current) => [...current, product.id]);
+  const addProductToCart = (product) => {
+    addToCart(product.id, 1);
     setCartMessage(product.name);
   };
 
@@ -49,7 +49,7 @@ export default function Collection() {
           </div>
         </div>
 
-        <div className="mb-4 flex items-center justify-end gap-2 text-[10px] uppercase tracking-[0.12em] text-[#82796B]"><ShoppingBag size={13} /> Bag: {cart.length} {cart.length === 1 ? "item" : "items"}</div>
+        <div className="mb-4 flex items-center justify-end gap-2 text-[10px] uppercase tracking-[0.12em] text-[#82796B]"><ShoppingBag size={13} /> <a href="/cart" className="underline underline-offset-4">Bag: {cartCount} {cartCount === 1 ? "item" : "items"}</a></div>
         <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-6">
           <AnimatePresence mode="popLayout">
             {shown.map((product, index) => <motion.article layout key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.045, ease }} className="group min-w-0">
@@ -59,10 +59,10 @@ export default function Collection() {
                 </button>
                 <div className="pointer-events-none absolute inset-0 z-[2] bg-gradient-to-t from-[#17130D]/25 via-transparent to-white/10 opacity-60 transition-opacity duration-500 group-hover:opacity-90" />
                 {product.tag && <span className="pointer-events-none absolute left-2.5 top-2.5 z-[3] bg-[#F7F3EA]/90 px-2.5 py-1.5 text-[8px] font-semibold uppercase tracking-[0.14em] text-[#78531F] backdrop-blur-md sm:left-4 sm:top-4 sm:text-[9px]">{product.tag}</span>}
-                <button type="button" onClick={() => setFavorites((current) => current.includes(product.id) ? current.filter((id) => id !== product.id) : [...current, product.id])} aria-label={favorites.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={favorites.includes(product.id)} className={`absolute right-2.5 top-2.5 z-[4] flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10 ${favorites.includes(product.id) ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/85 text-[#30271A] hover:scale-105 hover:bg-white"}`}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} strokeWidth={1.6} /></button>
+                <button type="button" onClick={() => toggleWishlist(product.id)} aria-label={favorites.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={favorites.includes(product.id)} className={`absolute right-2.5 top-2.5 z-[4] flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-all duration-300 sm:right-4 sm:top-4 sm:h-10 sm:w-10 ${favorites.includes(product.id) ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/85 text-[#30271A] hover:scale-105 hover:bg-white"}`}><Heart size={16} fill={favorites.includes(product.id) ? "currentColor" : "none"} strokeWidth={1.6} /></button>
                 <AnimatePresence>
                   {selectedProduct === product.id && <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }} transition={{ duration: 0.25 }} className="absolute inset-x-2 bottom-2 z-[5] flex flex-col gap-2 sm:inset-x-4 sm:bottom-4">
-                    <button type="button" onClick={() => addToCart(product)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#17130D]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F8E9BE] shadow-lg backdrop-blur-md transition-colors hover:bg-[#59401F] sm:text-[10px]"><ShoppingBag size={13} /> {cart.includes(product.id) ? "Add another" : "Add to cart"}</button>
+                    <button type="button" onClick={() => addProductToCart(product)} className="flex min-h-10 items-center justify-center gap-2 border border-[#F8E9BE]/70 bg-[#17130D]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#F8E9BE] shadow-lg backdrop-blur-md transition-colors hover:bg-[#59401F] sm:text-[10px]"><ShoppingBag size={13} /> {"Add to cart"}</button>
                     <a href={`/product/${product.id}`} onClick={() => setSelectedProduct(null)} className="flex min-h-10 items-center justify-center bg-[#F7F3EA]/95 px-2 py-2.5 text-[9px] font-semibold uppercase tracking-[0.12em] text-[#3E2B12] shadow-lg backdrop-blur-md transition-colors hover:bg-white sm:text-[10px]">Buy now</a>
                     <button type="button" onClick={() => setSelectedProduct(null)} aria-label="Close purchase options" className="absolute -right-1 -top-[6.5rem] flex h-7 w-7 items-center justify-center rounded-full border border-white/70 bg-[#F7F3EA]/95 text-[#30271A] shadow-md sm:-right-2 sm:-top-[6.5rem]"><X size={14} /></button>
                   </motion.div>}
