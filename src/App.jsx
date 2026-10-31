@@ -7,11 +7,14 @@ import Preloader from "./components/preloader";
 import AuthPage from "./pages/AuthPage";
 import Account from "./pages/Account";
 import ProductDetails from "./pages/ProductDetails";
+import Cart from "./pages/Cart";
+import Wishlist from "./pages/Wishlist";
+import { ShopProvider } from "./context/ShopContext";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./components/ToastProvider";
 
 const normalizePath = pathname => pathname.replace(/\/+$/, "") || "/";
-const ROUTES = new Set(["/", "/about", "/login", "/register", "/account"]);
+const ROUTES = new Set(["/", "/about", "/login", "/register", "/account", "/cart", "/wishlist"]);
 const isKnownRoute = pathname => ROUTES.has(pathname) || /^\/product\/\d+$/.test(pathname);
 
 function AppContent() {
@@ -71,7 +74,7 @@ function AppContent() {
   }, [path]);
 
   const productMatch = path.match(/^\/product\/(\d+)$/);
-  const page = productMatch ? <ProductDetails productId={Number(productMatch[1])} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" /> : path === "/account" ? <Account /> : <><Home /><Collection /></>;
+  const page = productMatch ? <ProductDetails productId={Number(productMatch[1])} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" />  : path === "/account" ? <Account /> : path === "/cart" ? <Cart /> : path === "/wishlist" ? <Wishlist /> : <><Home /><Collection /></>;
 
   return <>
     <Nav />
@@ -81,5 +84,5 @@ function AppContent() {
 }
 
 export default function App() {
-  return <AuthProvider><ToastProvider><AppContent /></ToastProvider></AuthProvider>;
+  return <AuthProvider><ToastProvider><ShopProvider><AppContent /></ShopProvider></ToastProvider></AuthProvider>;
 }
