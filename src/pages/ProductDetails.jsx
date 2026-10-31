@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, Download, Minus, Plus, Share2, ShoppingBag, ShieldCheck, Truck } from "lucide-react";
+import { ArrowLeft, Download, Minus, Plus, Share2, ShieldCheck, Truck } from "lucide-react";
 
 const products = [
   { id: 1, name: "Celeste Diamond Ring", category: "Rings", price: 18500, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=90", description: "A graceful statement ring with a luminous centre stone and a refined silhouette. Designed to bring a subtle touch of brilliance to everyday moments and special occasions.", material: "Gold-tone finish · Statement stone", care: "Keep away from perfumes, water and harsh chemicals. Store separately in a soft pouch." },
