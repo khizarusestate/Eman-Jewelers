@@ -196,6 +196,24 @@ export default function Nav() {
                         </div>
                     </div>
 
+                    {/* Mobile Action Icons */}
+                    <div className="mr-3 flex items-center gap-4 lg:hidden">
+                        <a href="/wishlist" aria-label={`Wishlist, ${wishlist.length} saved items`} title="Wishlist" onClick={closeMenu} className={`${iconCss} relative`}>
+                            <Heart size={20} strokeWidth={1.6} />
+                            {wishlist.length > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{wishlist.length}</span>}
+                        </a>
+                        <a href="/cart" aria-label={`Shopping bag, ${cartCount} items`} title="Shopping bag" onClick={closeMenu} className={`${iconCss} relative`}>
+                            <ShoppingBag size={20} strokeWidth={1.6} />
+                            {cartCount > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{cartCount}</span>}
+                        </a>
+                        <button type="button" onClick={() => { setSearchOpen((open) => !open); setMobileOpen(false); }} aria-label="Search" aria-expanded={searchOpen} className={iconCss}>
+                            <Search size={20} strokeWidth={1.6} />
+                        </button>
+                        <a href={isAuthenticated ? "/account" : "/login"} aria-label={isAuthenticated ? "My account" : "Login"} title={isAuthenticated ? "My account" : "Login"} onClick={closeMenu} className={iconCss}>
+                            <UserRound size={20} strokeWidth={1.6} />
+                        </a>
+                    </div>
+
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => {
