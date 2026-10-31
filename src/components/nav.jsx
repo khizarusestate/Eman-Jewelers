@@ -1,17 +1,67 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import {
     Search,
     Heart,
     ShoppingBag,
     UserRound,
-    Menu,
+    ArrowUpRight,
+    Gem,
     X
 } from "lucide-react";
+
+const EASE = [0.16, 1, 0.3, 1];
+
+const listVariants = {
+    hidden: {},
+    show: { transition: { staggerChildren: 0.07, delayChildren: 0.18 } },
+};
+
+const itemVariants = {
+    hidden: { opacity: 0, y: 18 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: EASE } },
+};
 
 export default function Nav() {
     const [searchOpen, setSearchOpen] = useState(false);
     const [mobileOpen, setMobileOpen] = useState(false);
+    const [scrolled, setScrolled] = useState(false);
+
+    const closeMenu = () => setMobileOpen(false);
+
+    /* Header gets denser once the page scrolls */
+    useEffect(() => {
+        const onScroll = () => setScrolled(window.scrollY > 24);
+        onScroll();
+        window.addEventListener("scroll", onScroll, { passive: true });
+        return () => window.removeEventListener("scroll", onScroll);
+    }, []);
+
+    /* Mobile menu: lock page scroll, close on Escape or when resizing to desktop */
+    useEffect(() => {
+        if (!mobileOpen) return undefined;
+
+        const prevOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        const onKey = (e) => {
+            if (e.key === "Escape") setMobileOpen(false);
+        };
+        const mq = window.matchMedia("(min-width: 1024px)");
+        const onChange = () => {
+            if (mq.matches) setMobileOpen(false);
+        };
+
+        window.addEventListener("keydown", onKey);
+        mq.addEventListener("change", onChange);
+
+        return () => {
+            document.body.style.overflow = prevOverflow;
+            window.removeEventListener("keydown", onKey);
+            mq.removeEventListener("change", onChange);
+        };
+    }, [mobileOpen]);
 
     const navLinks = [
         { name: "Home", href: "#home" },
@@ -58,7 +108,13 @@ export default function Nav() {
                 }
             `}</style>
 
-            <header className="relative z-50 w-full bg-black ">
+            <header
+                className={`fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${
+                    scrolled || mobileOpen
+                        ? "border-[#BB7B24]/25 bg-[#050403]/70 backdrop-blur-xl"
+                        : "border-[#BB7B24]/10 bg-[#050403]/25 backdrop-blur-[8px]"
+                }`}
+            >
 
                 {/* Main Navbar */}
                 <nav className="max-w-[1450px] mx-auto h-[75px] px-6 lg:px-12 flex items-center justify-between nav-enter">
@@ -131,15 +187,32 @@ export default function Nav() {
 
                     {/* Mobile Menu Button */}
                     <button
-                        onClick={() => setMobileOpen(!mobileOpen)}
-                        className={`lg:hidden ${iconCss}`}
-                        aria-label="Toggle menu"
+                        onClick={() => {
+                            setMobileOpen((o) => !o);
+                            setSearchOpen(false);
+                        }}
+                        className="relative flex h-11 w-11 items-center justify-center rounded-full border border-[#BB7B24]/40 bg-[#F1C965]/[0.04] transition-all duration-500 hover:border-[#F1C965]/80 hover:bg-[#F1C965]/10 hover:shadow-[0_0_20px_rgba(241,201,101,0.25)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#F1C965] lg:hidden"
+                        aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileOpen}
+                        aria-controls="mobile-menu"
                     >
-                        {mobileOpen ? (
-                            <X size={26} />
-                        ) : (
-                            <Menu size={26} />
-                        )}
+                        <span className="relative block h-3.5 w-5">
+                            <motion.span
+                                className="absolute left-0 block h-[1.5px] w-full rounded-full bg-[#F1C965]"
+                                animate={mobileOpen ? { top: "50%", rotate: 45 } : { top: "0%", rotate: 0 }}
+                                transition={{ duration: 0.45, ease: EASE }}
+                            />
+                            <motion.span
+                                className="absolute left-0 top-1/2 block h-[1.5px] w-full rounded-full bg-[#F1C965]"
+                                animate={mobileOpen ? { opacity: 0, scaleX: 0 } : { opacity: 1, scaleX: 1 }}
+                                transition={{ duration: 0.3, ease: EASE }}
+                            />
+                            <motion.span
+                                className="absolute left-0 block h-[1.5px] w-full rounded-full bg-[#F1C965]"
+                                animate={mobileOpen ? { top: "50%", rotate: -45 } : { top: "100%", rotate: 0 }}
+                                transition={{ duration: 0.45, ease: EASE }}
+                            />
+                        </span>
                     </button>
                 </nav>
 
@@ -170,53 +243,106 @@ export default function Nav() {
                     </div>
                 )}
 
-                {/* Mobile Navigation */}
-                {mobileOpen && (
-                    <div className="lg:hidden bg-transparent search-reveal">
-
-                        <ul className="flex flex-col items-center gap-7 py-8">
-                            {navLinks.map((link) => (
-                                <li key={link.name}>
-                                    <a
-                                        href={link.href}
-                                        onClick={() => setMobileOpen(false)}
-                                        className={textCss}
-                                    >
-                                        {link.name}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
-
-                        <div className="flex justify-center items-center gap-9 pb-8">
-
-                            <button
-                                onClick={() => {
-                                    setSearchOpen(!searchOpen);
-                                    setMobileOpen(false);
-                                }}
-                                className={iconCss}
-                                aria-label="Search"
-                            >
-                                <Search size={22} />
-                            </button>
-
-                            <a href="/wishlist" className={iconCss}>
-                                <Heart size={22} />
-                            </a>
-
-                            <a href="/account" className={iconCss}>
-                                <UserRound size={22} />
-                            </a>
-
-                            <a href="/cart" className={iconCss}>
-                                <ShoppingBag size={22} />
-                            </a>
-
-                        </div>
-                    </div>
-                )}
+                
             </header>
+
+            {/* Mobile Navigation — overlays Home, Home itself never moves */}
+            <AnimatePresence>
+                {mobileOpen && (
+                    <motion.div
+                        key="mobile-menu"
+                        id="mobile-menu"
+                        initial={{ opacity: 0, y: -14 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -14 }}
+                        transition={{ duration: 0.5, ease: EASE }}
+                        className="fixed inset-x-0 bottom-0 top-[75px] z-40 flex flex-col overflow-y-auto border-t border-[#BB7B24]/20 bg-[#050403]/80 backdrop-blur-2xl lg:hidden"
+                    >
+                        {/* Ambient glow */}
+                        <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                            <div className="absolute -left-24 top-[8%] h-72 w-72 rounded-full bg-[#A76A16]/20 blur-[90px]" />
+                            <div className="absolute -right-24 bottom-[12%] h-72 w-72 rounded-full bg-[#F1C965]/10 blur-[90px]" />
+                        </div>
+
+                        <div className="relative mx-auto flex w-full max-w-md flex-1 flex-col px-7 pb-8 pt-4">
+
+                            <motion.ul variants={listVariants} initial="hidden" animate="show">
+                                {navLinks.map((link) => (
+                                    <motion.li key={link.name} variants={itemVariants}>
+                                        <a
+                                            href={link.href}
+                                            onClick={closeMenu}
+                                            className="group flex items-center justify-between border-b border-[#BB7B24]/15 py-[1.15rem] font-serif text-[1.9rem] leading-none tracking-[-0.02em] text-[#FFF9EA] transition-colors duration-500 hover:text-[#F1C965] active:text-[#F1C965]"
+                                        >
+                                            <span className="transition-transform duration-500 group-hover:translate-x-1.5">
+                                                {link.name}
+                                            </span>
+                                            <ArrowUpRight
+                                                size={20}
+                                                strokeWidth={1.4}
+                                                className="text-[#BB7B24] transition-all duration-500 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-[#F1C965]"
+                                            />
+                                        </a>
+                                    </motion.li>
+                                ))}
+                            </motion.ul>
+
+                            {/* Quick actions */}
+                            <motion.div
+                                initial={{ opacity: 0, y: 18 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.8, delay: 0.5, ease: EASE }}
+                                className="mt-9 grid grid-cols-4 gap-3"
+                            >
+                                {[
+                                    { label: "Search", Icon: Search, onClick: () => { setSearchOpen(true); closeMenu(); } },
+                                    { label: "Wishlist", Icon: Heart, href: "/wishlist" },
+                                    { label: "Account", Icon: UserRound, href: "/account" },
+                                    { label: "Bag", Icon: ShoppingBag, href: "/cart" },
+                                ].map((item) => {
+                                    const { label, Icon, href, onClick } = item;
+                                    const inner = (
+                                        <>
+                                            <span className="flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[#BB7B24]/40 bg-[#F1C965]/[0.04] text-[#F1C965] transition-all duration-500 group-hover:border-[#F1C965]/80 group-hover:bg-[#F1C965]/10 group-hover:shadow-[0_0_22px_rgba(241,201,101,0.3)]">
+                                                <Icon size={21} strokeWidth={1.5} />
+                                            </span>
+                                            <span className="text-[11px] tracking-wide text-[#A99A83] transition-colors duration-500 group-hover:text-[#F1C965]">
+                                                {label}
+                                            </span>
+                                        </>
+                                    );
+                                    const cls = "group flex flex-col items-center gap-2.5";
+                                    return href ? (
+                                        <a key={label} href={href} onClick={closeMenu} className={cls}>
+                                            {inner}
+                                        </a>
+                                    ) : (
+                                        <button key={label} onClick={onClick} aria-label={label} className={cls}>
+                                            {inner}
+                                        </button>
+                                    );
+                                })}
+                            </motion.div>
+
+                            {/* Signature */}
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1, delay: 0.7 }}
+                                className="mt-auto flex flex-col items-center gap-3 pt-12"
+                            >
+                                <div className="flex w-full max-w-[220px] items-center gap-3">
+                                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-[#BB7B24]/70" />
+                                    <Gem size={14} strokeWidth={1.3} className="text-[#F1C965] drop-shadow-[0_0_8px_rgba(241,201,101,0.7)]" />
+                                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-[#BB7B24]/70" />
+                                </div>
+                                <p className="font-serif text-lg text-[#CD9135]">Eman Jewelers</p>
+                                <p className="text-[11px] tracking-wide text-[#A99A83]">Fine gold and diamond jewellery</p>
+                            </motion.div>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </>
     );
 }

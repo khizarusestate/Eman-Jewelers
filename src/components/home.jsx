@@ -121,7 +121,7 @@ export default function Home() {
             id="home"
             onMouseMove={handleMove}
             onMouseLeave={handleLeave}
-            className="relative h-[88vh] min-h-[620px] w-full overflow-hidden bg-[#050403] text-white selection:bg-[#F1C965] selection:text-black"
+            className="relative h-[calc(88vh+75px)] min-h-[calc(620px+75px)] w-full overflow-hidden bg-[#050403] text-white selection:bg-[#F1C965] selection:text-black"
         >
             {/* ================= Atmosphere ================= */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
@@ -201,7 +201,7 @@ export default function Home() {
  
 
             {/* ================= Hero ================= */}
-            <section className="relative z-10 mx-auto flex h-full max-w-[1450px] items-center px-6 pb-[7vh] pt-[3vh] sm:px-10 lg:px-16">
+            <section className="relative z-10 mx-auto flex h-full max-w-[1450px] items-center px-6 pb-[7vh] pt-[calc(3vh+75px)] sm:px-10 lg:px-16">
                 <div className="grid w-full items-center gap-[4vh] lg:grid-cols-[1.08fr_0.92fr] lg:gap-10">
 
                     {/* ---------- Copy ---------- */}
