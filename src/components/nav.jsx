@@ -124,7 +124,7 @@ export default function Nav() {
                         <img
                             src="/images/Logo.png"
                             alt="Eman Jewelers"
-                            className="h-[65px] w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:drop-shadow-[0_0_15px_rgba(241,201,101,0.4)]"
+                            className="h-[69px] w-auto object-contain transition-all duration-700 group-hover:scale-105 group-hover:drop-shadow-[0_0_15px_rgba(241,201,101,0.4)]"
                         />
                     </a>
 
