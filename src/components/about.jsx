@@ -10,7 +10,6 @@ import {
     ShieldCheck,
     Fingerprint,
     MoveUpRight,
-    Quote,
 } from "lucide-react";
 
 const EASE = [0.16, 1, 0.3, 1];
