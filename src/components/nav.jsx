@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "./ToastProvider";
+import Contact from "./contact";
 import {
     Search,
     Heart,
@@ -27,6 +28,7 @@ const itemVariants = {
 
 export default function Nav() {
     const [searchOpen, setSearchOpen] = useState(false);
+    const [contactOpen, setContactOpen] = useState(false);
     const { user, logout } = useAuth();
     const toast = useToast();
     const isAuthenticated = Boolean(user);
@@ -249,6 +251,8 @@ export default function Nav() {
                 
             </header>
 
+            {contactOpen && <Contact onClose={() => setContactOpen(false)} />}
+
             {/* Mobile Navigation — overlays Home, Home itself never moves */}
             <AnimatePresence>
                 {mobileOpen && (
@@ -274,7 +278,7 @@ export default function Nav() {
                                     <motion.li key={link.name} variants={itemVariants}>
                                         <a
                                             href={link.href}
-                                            onClick={closeMenu}
+                                            onClick={link.name === "Contact" ? (event) => { event.preventDefault(); closeMenu(); setContactOpen(true); } : closeMenu}
                                             className="group flex items-center justify-between border-b border-[#BB7B24]/15 py-[1.15rem] font-serif text-[1.9rem] leading-none tracking-[-0.02em] text-[#FFF9EA] transition-colors duration-500 hover:text-[#F1C965] active:text-[#F1C965]"
                                         >
                                             <span className="transition-transform duration-500 group-hover:translate-x-1.5">
