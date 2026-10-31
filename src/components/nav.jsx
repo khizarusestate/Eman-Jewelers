@@ -81,6 +81,15 @@ export default function Nav() {
 
     return (
         <>
+            <div
+                aria-hidden="true"
+                className="pointer-events-none fixed left-0 top-0 z-[100] h-[4px] w-full overflow-hidden bg-[#D7B36B]/10"
+            >
+                <div
+                    className="h-full bg-gradient-to-r from-[#9B641E] via-[#FFF0B0] to-[#C58A32] shadow-[0_0_14px_2px_rgba(241,201,101,0.8)] transition-[width] duration-100 ease-out"
+                    style={{ width: `${Math.min(100, Math.max(0, scrollProgress * 100))}%` }}
+                />
+            </div>
             <style>{`
                 @keyframes navFade {
                     from {
@@ -116,8 +125,8 @@ export default function Nav() {
             <header
                 className={`fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${
                     scrolled || mobileOpen
-                        ? "border-[#BB7B24]/25 bg-[#050403]/70 backdrop-blur-xl"
-                        : "border-[#BB7B24]/10 bg-[#050403]/25 backdrop-blur-[8px]"
+                        ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl"
+                        : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"
                 }`}
             >
 
