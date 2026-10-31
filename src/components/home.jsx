@@ -1,5 +1,4 @@
 import { useMemo, useRef, useState } from "react";
-import Contact from "./contact";
 import {
     motion,
     useMotionValue,
@@ -481,7 +480,6 @@ export default function Home() {
                 </motion.span>
             </motion.a>
         </main>
-        <Contact />
         </>
     );
 }
