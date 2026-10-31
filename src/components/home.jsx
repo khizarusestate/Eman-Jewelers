@@ -126,6 +126,18 @@ export default function Home() {
         >
             {/* ================= Atmosphere ================= */}
             <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                {/* Blurred Home.png atmosphere, matching the footer background */}
+                <motion.div
+                    className="absolute -inset-6 scale-[1.04] bg-cover bg-center bg-no-repeat blur-[12px]"
+                    style={{
+                        backgroundImage: "url('/images/Home.png')",
+                        opacity: 0.28,
+                        mixBlendMode: "screen",
+                    }}
+                    animate={reduce ? {} : { scale: [1.04, 1.09, 1.04], opacity: [0.22, 0.31, 0.22] }}
+                    transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+                />
+                <div className="absolute inset-0 bg-[linear-gradient(110deg,rgba(5,4,3,0.88)_0%,rgba(5,4,3,0.72)_48%,rgba(5,4,3,0.84)_100%)]" />
                 <motion.div style={{ x: glowX, y: glowY }} className="absolute inset-0">
                     <motion.div
                         animate={{ x: [0, 65, -30, 0], y: [0, -35, 25, 0], scale: [1, 1.18, 0.94, 1] }}
