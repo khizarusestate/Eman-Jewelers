@@ -6,11 +6,13 @@ import Nav from "./components/nav";
 import Preloader from "./components/preloader";
 import AuthPage from "./pages/AuthPage";
 import Account from "./pages/Account";
+import ProductDetails from "./pages/ProductDetails";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./components/ToastProvider";
 
 const normalizePath = pathname => pathname.replace(/\/+$/, "") || "/";
 const ROUTES = new Set(["/", "/about", "/login", "/register", "/account"]);
+const isKnownRoute = pathname => ROUTES.has(pathname) || /^\/product\/\d+$/.test(pathname);
 
 function AppContent() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
@@ -37,7 +39,7 @@ function AppContent() {
       const destination = new URL(link.href, window.location.href);
       if (destination.origin !== window.location.origin) return;
       const nextPath = normalizePath(destination.pathname);
-      if (!ROUTES.has(nextPath)) return;
+      if (!isKnownRoute(nextPath)) return;
       if (nextPath === path && !destination.hash) return;
       event.preventDefault();
       window.history.pushState({}, "", destination.pathname + destination.search + destination.hash);
@@ -68,7 +70,8 @@ function AppContent() {
     };
   }, [path]);
 
-  const page = path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" /> : path === "/account" ? <Account /> : <><Home /><Collection /></>;
+  const productMatch = path.match(/^\/product\/(\d+)$/);
+  const page = productMatch ? <ProductDetails productId={Number(productMatch[1])} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" /> : path === "/account" ? <Account /> : <><Home /><Collection /></>;
 
   return <>
     <Nav />
