@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, Download, Minus, Plus, Share2, ShieldCheck, Truck } from "lucide-react";
+import { ArrowLeft, Download, Minus, Plus, Share2, ShieldCheck, Truck, ShoppingBag } from "lucide-react";
+import { useShop } from "../context/ShopContext";
 
 const products = [
   { id: 1, name: "Celeste Diamond Ring", category: "Rings", price: 18500, image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=1200&q=90", description: "A graceful statement ring with a luminous centre stone and a refined silhouette. Designed to bring a subtle touch of brilliance to everyday moments and special occasions.", material: "Gold-tone finish · Statement stone", care: "Keep away from perfumes, water and harsh chemicals. Store separately in a soft pouch." },
@@ -17,6 +18,8 @@ const formatPrice = amount => new Intl.NumberFormat("en-PK", { style: "currency"
 
 export default function ProductDetails({ productId }) {
   const product = products.find(item => item.id === productId);
+  const { addToCart, toggleWishlist, wishlist } = useShop();
+  const [addedToBag, setAddedToBag] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [showImageFallback, setShowImageFallback] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
@@ -90,6 +93,7 @@ export default function ProductDetails({ productId }) {
               </div>
               <div className="mt-5 flex items-end justify-between gap-3"><span className="text-[10px] uppercase tracking-[0.18em] text-[#75664E]">Total price</span><strong className="font-serif text-2xl text-[#68481F]">{formatPrice(total)}</strong></div>
             </div>
+            <div className="mt-6 grid grid-cols-[1fr_auto] gap-3"><button type="button" onClick={() => { addToCart(product.id, quantity); setAddedToBag(true); }} className="flex min-h-14 items-center justify-center gap-2 border border-[#B98536]/50 bg-white/50 px-3 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:bg-[#EAE3D5]"><ShoppingBag size={16}/>{addedToBag ? "Added to bag" : "Add to bag"}</button><button type="button" onClick={() => toggleWishlist(product.id)} aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={wishlist.includes(product.id)} className="grid min-h-14 min-w-14 place-items-center border border-[#B98536]/50 text-[#68481F]"><span aria-hidden="true">{wishlist.includes(product.id) ? "♥" : "♡"}</span></button></div>
             <button type="button" onClick={handleOrder} className="mt-6 flex min-h-14 w-full items-center justify-center gap-3 bg-[#17130D] px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F8E9BE] transition-colors hover:bg-[#5A401F]"><Share2 size={16} /> Order via WhatsApp</button>
                         {shareStatus && <p role="status" className="mt-3 text-xs leading-5 text-[#75664E]">{shareStatus}</p>}
                         {showImageFallback && <div className="mt-3 border border-[#B98536]/35 bg-white/50 p-4">
