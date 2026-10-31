@@ -19,7 +19,7 @@ export default function Contact({ onClose }) {
             document.body.style.overflow = previousOverflow;
             window.removeEventListener("keydown", onKeyDown);
         };
-    }, [onClose]);
+    }, []);
 
     const update = (event) => {
         const { name, value } = event.target;
