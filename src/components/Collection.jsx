@@ -18,7 +18,7 @@ const ease = [0.16, 1, 0.3, 1];
 
 export default function Collection() {
   const [active, setActive] = useState("All Pieces");
-  const { wishlist: favorites, cart, addToCart, toggleWishlist, cartCount } = useShop();
+  const { wishlist: favorites, addToCart, toggleWishlist, cartCount } = useShop();
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showAll, setShowAll] = useState(false);
   const [cartMessage, setCartMessage] = useState("");
@@ -82,7 +82,7 @@ export default function Collection() {
           <button type="button" onClick={() => setShowAll((value) => !value)} className="inline-flex min-h-12 items-center gap-3 border border-[#9B7B46]/55 px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#4B3920] transition-all duration-300 hover:border-[#17130D] hover:bg-[#17130D] hover:text-[#F8E9BE]">{showAll ? "Show featured pieces" : "View all pieces"}</button>
         </div>
         <p className="mt-8 text-center text-[10px] leading-5 text-[#958A79]">Preview collection · Product availability and pricing will be updated soon.</p>
-        <AnimatePresence>{cartMessage && <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 border border-[#B98536]/40 bg-[#17130D] px-5 py-3 text-xs text-[#F8E9BE] shadow-2xl">Added {cartMessage} to your demo bag.<button type="button" onClick={() => setCartMessage("")} className="ml-4 underline underline-offset-4">Dismiss</button></motion.div>}</AnimatePresence>
+        <AnimatePresence>{cartMessage && <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 border border-[#B98536]/40 bg-[#17130D] px-5 py-3 text-xs text-[#F8E9BE] shadow-2xl">Added {cartMessage} to your bag.<button type="button" onClick={() => setCartMessage("")} className="ml-4 underline underline-offset-4">Dismiss</button></motion.div>}</AnimatePresence>
       </div>
     </section>
   );
