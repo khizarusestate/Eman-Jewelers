@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
-import { ArrowLeft, Download, Minus, Plus, Share2, ShieldCheck, Truck, ShoppingBag } from "lucide-react";
+import { ArrowLeft, Download, Heart, Minus, Plus, Share2, ShieldCheck, Truck, ShoppingBag, Check } from "lucide-react";
 import { useShop } from "../context/ShopContext";
 
 const products = [
@@ -20,8 +20,9 @@ export default function ProductDetails({ productId }) {
   const product = products.find(item => item.id === productId);
   const { addToCart, toggleWishlist, wishlist, cart } = useShop();
   const [addedToBag, setAddedToBag] = useState(false);
-  const cartLine = cart.find((item) => item.id === product.id);
+  const cartLine = product ? cart.find((item) => item.id === product.id) : undefined;
   const isInCart = Boolean(cartLine);
+  const isWishlisted = product ? wishlist.includes(product.id) : false;
   const [quantity, setQuantity] = useState(1);
   const [showImageFallback, setShowImageFallback] = useState(false);
   const [shareStatus, setShareStatus] = useState("");
@@ -70,9 +71,13 @@ export default function ProductDetails({ productId }) {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-14">
         <a href="/#collections" className="mb-7 inline-flex items-center gap-2 text-[10px] font-medium uppercase tracking-[0.2em] text-[#75664E] transition-colors hover:text-[#9A6A25]"><ArrowLeft size={15} /> Back to collection</a>
         <div className="grid items-start gap-8 md:gap-12 lg:grid-cols-[1.02fr_0.98fr] lg:gap-16">
-          <motion.div initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="relative overflow-hidden bg-[#EAE3D5]">
-            <div className="absolute left-4 top-4 z-10 bg-[#F7F3EA]/90 px-3 py-2 text-[9px] uppercase tracking-[0.2em] text-[#78531F] backdrop-blur">{product.category}</div>
-            <img src={product.image} alt={product.name} className="aspect-[4/5] w-full object-cover sm:aspect-[5/4] lg:aspect-[4/5]" />
+          <motion.div initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }} className="group relative overflow-hidden border border-[#B98536]/35 bg-[#EAE3D5] shadow-[0_18px_45px_rgba(65,45,18,0.10)]">
+            <div className="absolute left-4 top-4 z-10 border border-[#B98536]/20 bg-[#F7F3EA]/90 px-3 py-2 text-[9px] uppercase tracking-[0.2em] text-[#78531F] backdrop-blur">{product.category}</div>
+            <button type="button" onClick={() => toggleWishlist(product.id)} aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={isWishlisted} className={`absolute right-4 top-4 z-10 grid h-11 w-11 place-items-center rounded-full border backdrop-blur-md transition-all duration-300 ${isWishlisted ? "border-[#B98536] bg-[#B98536] text-white" : "border-white/70 bg-[#F7F3EA]/90 text-[#68481F] hover:scale-105 hover:bg-white"}`}><Heart size={18} fill={isWishlisted ? "currentColor" : "none"} strokeWidth={1.6} /></button>
+            <div className="overflow-hidden">
+              <img src={product.image} alt={product.name} fetchPriority="high" className="aspect-[4/5] w-full object-cover saturate-[1.06] contrast-[1.03] transition-transform duration-700 ease-out group-hover:scale-[1.025] sm:aspect-[5/4] lg:aspect-[4/5]" />
+            </div>
+            <div className="flex items-center justify-between gap-3 border-t border-[#B98536]/20 bg-white/35 px-4 py-3 text-[9px] uppercase tracking-[0.15em] text-[#82745D]"><span>Signature collection</span><span className="inline-flex items-center gap-1.5"><span className="h-1.5 w-1.5 rounded-full bg-[#9A773F]" /> Made to be treasured</span></div>
           </motion.div>
           <motion.section initial={reduceMotion ? false : { opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65, delay: reduceMotion ? 0 : 0.1 }} className="lg:sticky lg:top-28">
             <p className="text-[10px] uppercase tracking-[0.3em] text-[#9A773F]">Eman Jewelers · Signature collection</p>
@@ -95,14 +100,14 @@ export default function ProductDetails({ productId }) {
               </div>
               <div className="mt-5 flex items-end justify-between gap-3"><span className="text-[10px] uppercase tracking-[0.18em] text-[#75664E]">Total price</span><strong className="font-serif text-2xl text-[#68481F]">{formatPrice(total)}</strong></div>
             </div>
-            <div className="mt-6 grid grid-cols-[1fr_auto] gap-3">{!isInCart ? <button type="button" onClick={() => { addToCart(product.id, quantity); setAddedToBag(true); }} className="flex min-h-14 items-center justify-center gap-2 border border-[#B98536]/50 bg-white/50 px-3 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:bg-[#EAE3D5]"><ShoppingBag size={16}/>{addedToBag ? "Added to bag" : "Add to bag"}</button> : <a href="/cart" className="flex min-h-14 items-center justify-center gap-2 bg-[#17130D] px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#F8E9BE]"><ShoppingBag size={16}/> Already in bag · View ({cartLine.quantity})</a>}<button type="button" onClick={() => toggleWishlist(product.id)} aria-label={wishlist.includes(product.id) ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={wishlist.includes(product.id)} className="grid min-h-14 min-w-14 place-items-center border border-[#B98536]/50 text-[#68481F]"><span aria-hidden="true">{wishlist.includes(product.id) ? "♥" : "♡"}</span></button></div>
+            <div className="mt-6 grid grid-cols-[1fr_auto] gap-3">{!isInCart ? <button type="button" onClick={() => { addToCart(product.id, quantity); setAddedToBag(true); }} className="flex min-h-14 items-center justify-center gap-2 border border-[#B98536]/50 bg-white/50 px-3 text-[10px] font-semibold uppercase tracking-[0.15em] transition-colors hover:bg-[#EAE3D5]"><ShoppingBag size={16}/>{addedToBag ? "Added to bag" : "Add to bag"}</button> : <a href="/cart" className="flex min-h-14 items-center justify-center gap-2 bg-[#17130D] px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-[#F8E9BE]"><ShoppingBag size={16}/> Already in bag · View ({cartLine.quantity})</a>}<button type="button" onClick={() => toggleWishlist(product.id)} aria-label={isWishlisted ? "Remove from wishlist" : "Add to wishlist"} aria-pressed={isWishlisted} className={`grid min-h-14 min-w-14 place-items-center border transition-colors ${isWishlisted ? "border-[#B98536] bg-[#B98536]/10 text-[#68481F]" : "border-[#B98536]/50 text-[#68481F] hover:bg-white/60"}`}><Heart size={19} fill={isWishlisted ? "currentColor" : "none"} strokeWidth={1.6} /></button></div>
             <button type="button" onClick={handleOrder} className="mt-6 flex min-h-14 w-full items-center justify-center gap-3 bg-[#17130D] px-6 py-4 text-[10px] font-semibold uppercase tracking-[0.22em] text-[#F8E9BE] transition-colors hover:bg-[#5A401F]"><Share2 size={16} /> Order via WhatsApp</button>
                         {shareStatus && <p role="status" className="mt-3 text-xs leading-5 text-[#75664E]">{shareStatus}</p>}
                         {showImageFallback && <div className="mt-3 border border-[#B98536]/35 bg-white/50 p-4">
                           <p className="text-xs leading-5 text-[#5F584D]">Share this product photo separately if your phone did not attach it automatically.</p>
                           <a href={product.image} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#68481F] underline underline-offset-4"><Download size={14} /> Open product image</a>
                         </div>}
-            <div className="mt-4 grid grid-cols-2 gap-3 text-[10px] leading-5 text-[#7D7465]"><div className="flex items-start gap-2"><ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Order confirmation before dispatch</span></div><div className="flex items-start gap-2"><Truck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Delivery details confirmed with you</span></div></div>
+            <div className="mt-4 grid grid-cols-2 gap-3 text-[10px] leading-5 text-[#7D7465]"><div className="flex items-start gap-2"><ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Order details confirmed before dispatch</span></div><div className="flex items-start gap-2"><Truck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Delivery details confirmed with you</span></div></div>
             <p className="mt-6 text-[10px] leading-5 text-[#968A77]">Demo catalogue: price, material and product details are illustrative and should be confirmed before ordering.</p>
           </motion.section>
         </div>
