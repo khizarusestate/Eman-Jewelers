@@ -10,12 +10,13 @@ import Account from "./pages/Account";
 import ProductDetails from "./pages/ProductDetails";
 import Cart from "./pages/Cart";
 import Wishlist from "./pages/Wishlist";
+import AdminPanel from "./pages/AdminPanel";
 import { ShopProvider } from "./context/ShopContext";
 import { AuthProvider } from "./context/AuthContext";
 import { ToastProvider } from "./components/ToastProvider";
 
 const normalizePath = pathname => pathname.replace(/\/+$/, "") || "/";
-const ROUTES = new Set(["/", "/about", "/login", "/register", "/account", "/cart", "/wishlist"]);
+const ROUTES = new Set(["/", "/about", "/login", "/register", "/account", "/cart", "/wishlist", "/admin", "/admin/login"]);
 const isKnownRoute = pathname => ROUTES.has(pathname) || /^\/product\/\d+$/.test(pathname);
 
 function AppContent() {
@@ -75,12 +76,13 @@ function AppContent() {
   }, [path]);
 
   const productMatch = path.match(/^\/product\/(\d+)$/);
-  const page = productMatch ? <ProductDetails productId={Number(productMatch[1])} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" />  : path === "/account" ? <Account /> : path === "/cart" ? <Cart /> : path === "/wishlist" ? <Wishlist /> : <><Home /><Collection /></>;
+  const isAdminRoute = path === "/admin" || path === "/admin/login";
+  const page = isAdminRoute ? <AdminPanel /> : productMatch ? <ProductDetails productId={Number(productMatch[1])} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" />  : path === "/account" ? <Account /> : path === "/cart" ? <Cart /> : path === "/wishlist" ? <Wishlist /> : <><Home /><Collection /></>;
 
   return <>
-    <Nav />
+    {!isAdminRoute && <Nav />}
     {page}
-    <Footer />
+    {!isAdminRoute && <Footer />}
     <Preloader visible={loading} />
   </>;
 }
