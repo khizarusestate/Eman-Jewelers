@@ -3,17 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { Heart, ShoppingBag, X } from "lucide-react";
 import { useShop } from "../context/ShopContext";
 
+import { products, formatPrice } from "../data/products";
 const filters = ["All Pieces", "Rings", "Necklaces", "Earrings", "Bracelets"];
-const products = [
-  { id: 1, name: "Celeste Diamond Ring", category: "Rings", price: "PKR 18,500", tag: "Bestseller", image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?auto=format&fit=crop&w=900&q=85" },
-  { id: 2, name: "Solstice Gold Necklace", category: "Necklaces", price: "PKR 24,900", tag: "New arrival", image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=900&q=85" },
-  { id: 3, name: "Luna Pearl Earrings", category: "Earrings", price: "PKR 12,800", tag: "", image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=85" },
-  { id: 4, name: "Eternity Gold Bangle", category: "Bracelets", price: "PKR 16,400", tag: "Limited edit", image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?auto=format&fit=crop&w=900&q=85" },
-  { id: 5, name: "Aurora Halo Ring", category: "Rings", price: "PKR 21,500", tag: "", image: "https://images.unsplash.com/photo-1603561596112-0a132b757442?auto=format&fit=crop&w=900&q=85" },
-  { id: 6, name: "Amara Layered Chain", category: "Necklaces", price: "PKR 19,200", tag: "Customer favourite", image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?auto=format&fit=crop&w=900&q=85" },
-  { id: 7, name: "Golden Hour Hoops", category: "Earrings", price: "PKR 9,800", tag: "", image: "https://images.unsplash.com/photo-1630019852942-ab7c9ab60959?auto=format&fit=crop&w=900&q=85" },
-  { id: 8, name: "Serein Charm Bracelet", category: "Bracelets", price: "PKR 14,700", tag: "", image: "https://images.unsplash.com/photo-1573408301185-9146fe634ad0?auto=format&fit=crop&w=900&q=85" },
-];
 const ease = [0.16, 1, 0.3, 1];
 
 export default function Collection() {
@@ -51,6 +42,7 @@ export default function Collection() {
         </div>
 
         <div className="mb-4 flex items-center justify-end gap-2 text-[10px] uppercase tracking-[0.12em] text-[#82796B]"><ShoppingBag size={13} /> <a href="/cart" className="underline underline-offset-4">Bag: {cartCount} {cartCount === 1 ? "item" : "items"}</a></div>
+        {products.length === 0 && <div className="border-y border-[#B98536]/25 bg-white/35 px-6 py-16 text-center"><p className="text-[10px] uppercase tracking-[0.25em] text-[#9A773F]">A new collection is on its way</p><h3 className="mt-3 font-serif text-3xl">Our pieces will be here soon.</h3><p className="mx-auto mt-3 max-w-md text-sm leading-7 text-[#777064]">We are preparing the Eman Jewelers collection. Please check back soon for available pieces.</p></div>}
         <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-8 sm:gap-x-5 sm:gap-y-10 lg:grid-cols-4 lg:gap-x-6">
           <AnimatePresence mode="popLayout">
             {shown.map((product, index) => <motion.article layout key={product.id} initial={reduceMotion ? false : { opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 12 }} transition={{ duration: 0.45, delay: reduceMotion ? 0 : index * 0.045, ease }} className="group min-w-0">
@@ -82,7 +74,7 @@ export default function Collection() {
         </motion.div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#B98536]/25 pt-7 sm:mt-16 sm:flex-row">
-          <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#877A65] sm:text-left">Showing {shown.length} of {filtered.length} curated pieces</p>
+          <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#877A65] sm:text-left">{products.length === 0 ? "New pieces coming soon" : `Showing ${shown.length} of ${filtered.length} pieces`}</p>
           <button type="button" onClick={() => setShowAll((value) => !value)} className="inline-flex min-h-12 items-center gap-3 border border-[#9B7B46]/55 px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#4B3920] transition-all duration-300 hover:border-[#17130D] hover:bg-[#17130D] hover:text-[#F8E9BE]">{showAll ? "Show featured pieces" : "View all pieces"}</button>
         </div>
         <AnimatePresence>{cartMessage && <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 border border-[#B98536]/40 bg-[#17130D] px-5 py-3 text-xs text-[#F8E9BE] shadow-2xl">Added {cartMessage} to your bag.<button type="button" onClick={() => setCartMessage("")} className="ml-4 underline underline-offset-4">Dismiss</button></motion.div>}</AnimatePresence>
