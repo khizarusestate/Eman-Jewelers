@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /login
+Disallow: /register
+Disallow: /account
+Disallow: /cart
+Disallow: /wishlist
+
+Sitemap: https://emanjewelers.vercel.app/sitemap.xml
