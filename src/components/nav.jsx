@@ -140,16 +140,16 @@ export default function Nav() {
                 animate={{ y: mobileOpen ? "-110%" : "0%" }}
                 transition={{ duration: 0.55, ease: EASE }}
                 className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${scrolled || mobileOpen ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl" : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"}` }
-            
+            >
                 <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
                     <div className="absolute -inset-8 bg-cover bg-center opacity-[0.10] blur-2xl" style={{backgroundImage:"url(/images/Home.png)"}} />
                     <motion.div className="absolute -left-20 -top-28 h-64 w-64 rounded-full bg-[#A76A16]/20 blur-[90px]" animate={{x:[0,45,-10,0],y:[0,18,-12,0],opacity:[0.25,0.7,0.25]}} transition={{duration:18,repeat:Infinity,ease:"easeInOut"}} />
                     <motion.div className="absolute -right-16 -top-28 h-64 w-64 rounded-full bg-[#F1C965]/15 blur-[95px]" animate={{x:[0,-35,12,0],y:[0,20,-10,0],opacity:[0.2,0.65,0.2]}} transition={{duration:21,repeat:Infinity,ease:"easeInOut"}} />
                     {Array.from({length:22},(_,i)=><motion.i key={i} className="absolute h-[2px] w-[2px] rounded-full bg-[#F1C965] shadow-[0_0_8px_2px_rgba(241,201,101,0.4)]" style={{left:((i*43)%100)+"%",top:((i*61)%100)+"%"}} animate={{y:[0,-15,0],opacity:[0.1,0.8,0.1],scale:[0.7,1.3,0.7]}} transition={{duration:5+i%5,delay:i%7,repeat:Infinity,ease:"easeInOut"}} />)}
                     <div className="absolute inset-0 bg-gradient-to-b from-[#080705]/65 via-[#080705]/55 to-[#080705]/80" />
-                </div>>
+                </div>
 
-                                {/* Main Navbar */}
+                {/* Main Navbar */}
                 <nav className="relative z-10 mx-auto flex h-[75px] max-w-[1450px] items-center justify-between px-6 nav-enter before:pointer-events-none before:absolute before:inset-x-6 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#D7B36B]/20 before:to-transparent lg:px-12">
 
                     {/* Logo */}
@@ -272,6 +272,7 @@ export default function Nav() {
                             </a>) : <p className="px-5 py-4 text-center text-xs text-[#BCA477]">No matching jewellery found.</p>}
                         </div>
                     </div>}
+                    </>
                 )}
 
                 
