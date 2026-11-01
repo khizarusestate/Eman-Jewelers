@@ -111,7 +111,6 @@ export default function ProductDetails({ productId }) {
                           <a href={product.image} target="_blank" rel="noreferrer" className="mt-3 inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#68481F] underline underline-offset-4"><Download size={14} /> Open product image</a>
                         </div>}
             <div className="mt-4 grid grid-cols-2 gap-3 text-[10px] leading-5 text-[#7D7465]"><div className="flex items-start gap-2"><ShieldCheck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Order details confirmed before dispatch</span></div><div className="flex items-start gap-2"><Truck size={16} className="mt-0.5 shrink-0 text-[#9A773F]" /><span>Delivery details confirmed with you</span></div></div>
-            <p className="mt-6 text-[10px] leading-5 text-[#968A77]">Demo catalogue: price, material and product details are illustrative and should be confirmed before ordering.</p>
           </motion.section>
         </div>
       </div>
