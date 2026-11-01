@@ -72,11 +72,11 @@ export default function Collection() {
                   </motion.div>}
                 </AnimatePresence>
               </div>
-              <button type="button" onClick={() => setSelectedProduct((current) => current === product.id ? null : product.id)} className="block w-full pt-4 text-left sm:pt-5" aria-label={`Select ${product.name}`}>
+              <div className="w-full pt-4 text-left sm:pt-5">
                 <div className="mb-1.5 flex items-start justify-between gap-2"><h3 className="font-serif text-[15px] leading-snug sm:text-lg">{product.name}</h3><span className="mt-1 hidden text-[8px] uppercase tracking-[0.14em] text-[#9B7B46] sm:inline">{product.category}</span></div>
                 <p className="text-[11px] leading-5 text-[#82796B] sm:text-xs">A timeless accent, thoughtfully chosen for you.</p>
-                <div className="mt-3 flex items-center justify-between gap-2"><span className="text-xs font-semibold tracking-wide text-[#5D411D] sm:text-sm">{product.price}</span><span className="text-[9px] uppercase tracking-[0.1em] text-[#9A773F]">{selectedProduct === product.id ? "Options open" : "View options"}</span></div>
-              </button>
+                <div className="mt-3"><span className="text-xs font-semibold tracking-wide text-[#5D411D] sm:text-sm">{product.price}</span></div>
+              </div>
             </motion.article>)}
           </AnimatePresence>
         </motion.div>
