@@ -23,6 +23,45 @@ function AppContent() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
   const [loading, setLoading] = useState(true);
   const transitionTimer = useRef(null);
+  useEffect(() => {
+    const baseUrl = "https://emanjewelers.vercel.app";
+    const routeMeta = {
+      "/": { title: "Eman Jewelers | Fine Jewellery", description: "Discover elegant jewellery at Eman Jewelers. Explore thoughtfully selected pieces for everyday elegance and unforgettable moments.", index: true },
+      "/about": { title: "About Eman Jewelers | Our Story", description: "Discover the Eman Jewelers approach to thoughtful design, meaningful jewellery and a considered shopping experience.", index: true },
+      "/login": { title: "Login | Eman Jewelers", description: "Sign in to your Eman Jewelers account.", index: false },
+      "/register": { title: "Create Account | Eman Jewelers", description: "Create your Eman Jewelers account.", index: false },
+      "/account": { title: "My Account | Eman Jewelers", description: "Manage your Eman Jewelers account and delivery details.", index: false },
+      "/cart": { title: "Shopping Bag | Eman Jewelers", description: "Review your Eman Jewelers shopping bag.", index: false },
+      "/wishlist": { title: "Wishlist | Eman Jewelers", description: "View your saved jewellery at Eman Jewelers.", index: false }
+    };
+    const productRoute = /^\\/product\\/[a-f0-9]{24}$/.test(path);
+    const meta = routeMeta[path] || (productRoute
+      ? { title: "Jewellery Piece | Eman Jewelers", description: "Explore this jewellery piece at Eman Jewelers.", index: true }
+      : routeMeta["/"]);
+    document.title = meta.title;
+    let description = document.querySelector('meta[name="description"]');
+    if (!description) {
+      description = document.createElement("meta");
+      description.name = "description";
+      document.head.appendChild(description);
+    }
+    description.content = meta.description;
+    let robots = document.querySelector('meta[name="robots"]');
+    if (!robots) {
+      robots = document.createElement("meta");
+      robots.name = "robots";
+      document.head.appendChild(robots);
+    }
+    robots.content = meta.index ? "index, follow, max-image-preview:large" : "noindex, nofollow";
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.rel = "canonical";
+      document.head.appendChild(canonical);
+    }
+    canonical.href = baseUrl + path;
+  }, [path]);
+
 
   useEffect(() => {
     transitionTimer.current = window.setTimeout(() => setLoading(false), 1750);
