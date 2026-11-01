@@ -75,7 +75,7 @@ function AppContent() {
     };
   }, [path]);
 
-  const productMatch = path.match(/^\/product\/(\d+)$/);
+  const productMatch = path.match(/^\/product\/([a-f0-9]{24})$/);
   const page = productMatch ? <ProductDetails productId={productMatch[1]} /> : path === "/about" ? <About /> : path === "/login" ? <AuthPage mode="login" /> : path === "/register" ? <AuthPage mode="register" />  : path === "/account" ? <Account /> : path === "/cart" ? <Cart /> : path === "/wishlist" ? <Wishlist /> : <><Home /><Collection /></>;
 
   return <>
