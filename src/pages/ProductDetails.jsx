@@ -7,6 +7,8 @@ import { useAuth } from "../context/AuthContext";
 import { useToast } from "../components/ToastProvider";
 import { formatPrice } from "../data/products";
 
+const WHATSAPP_NUMBER = "923177348178";
+
 export default function ProductDetails({ productId }) {
   const { products, loading } = useCatalog();
   const product = products.find(item => String(item.id) === String(productId));
@@ -79,9 +81,9 @@ export default function ProductDetails({ productId }) {
         `Phone: ${user.phone}`,
         `Address: ${user.address}, ${user.city}`,
         "Please confirm availability and delivery."
-      ].join("\\n");
+      ].join("\n");
       toast("Order saved successfully. Opening WhatsApp…", "success");
-      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+      window.location.assign(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`);
     } catch (error) { toast(error.message, "error"); }
     finally { setBusy(false); }
   };
