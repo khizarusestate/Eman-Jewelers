@@ -1,9 +1,10 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "./ToastProvider";
 import { useShop } from "../context/ShopContext";
+import { useCatalog } from "../context/CatalogContext";
 import Contact from "./contact";
 import {
     Search,
@@ -30,10 +31,13 @@ const itemVariants = {
 
 export default function Nav() {
     const [searchOpen, setSearchOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
     const [contactOpen, setContactOpen] = useState(false);
     const { user, logout } = useAuth();
     const toast = useToast();
     const { cartCount, wishlist } = useShop();
+    const { products } = useCatalog();
+    const searchResults = useMemo(() => { const q = searchQuery.trim().toLowerCase(); if (!q) return []; return products.filter(p => [p.name,p.category,p.description].filter(Boolean).some(v => String(v).toLowerCase().includes(q))).slice(0,6); }, [products,searchQuery]);
     const isAuthenticated = Boolean(user);
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
@@ -136,10 +140,17 @@ export default function Nav() {
                 animate={{ y: mobileOpen ? "-110%" : "0%" }}
                 transition={{ duration: 0.55, ease: EASE }}
                 className={`${mobileOpen ? "hidden lg:block" : ""} fixed inset-x-0 top-0 z-50 w-full border-b backdrop-saturate-150 transition-[background-color,border-color,backdrop-filter] duration-500 ${scrolled || mobileOpen ? "border-[#D7B36B]/30 bg-[#080705]/92 shadow-[0_12px_40px_rgba(0,0,0,0.38)] backdrop-blur-2xl" : "border-[#D7B36B]/15 bg-[#080705]/72 shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl"}` }
-            >
+            
+                <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
+                    <div className="absolute -inset-8 bg-cover bg-center opacity-[0.10] blur-2xl" style={{backgroundImage:"url(/images/Home.png)"}} />
+                    <motion.div className="absolute -left-20 -top-28 h-64 w-64 rounded-full bg-[#A76A16]/20 blur-[90px]" animate={{x:[0,45,-10,0],y:[0,18,-12,0],opacity:[0.25,0.7,0.25]}} transition={{duration:18,repeat:Infinity,ease:"easeInOut"}} />
+                    <motion.div className="absolute -right-16 -top-28 h-64 w-64 rounded-full bg-[#F1C965]/15 blur-[95px]" animate={{x:[0,-35,12,0],y:[0,20,-10,0],opacity:[0.2,0.65,0.2]}} transition={{duration:21,repeat:Infinity,ease:"easeInOut"}} />
+                    {Array.from({length:22},(_,i)=><motion.i key={i} className="absolute h-[2px] w-[2px] rounded-full bg-[#F1C965] shadow-[0_0_8px_2px_rgba(241,201,101,0.4)]" style={{left:((i*43)%100)+"%",top:((i*61)%100)+"%"}} animate={{y:[0,-15,0],opacity:[0.1,0.8,0.1],scale:[0.7,1.3,0.7]}} transition={{duration:5+i%5,delay:i%7,repeat:Infinity,ease:"easeInOut"}} />)}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#080705]/65 via-[#080705]/55 to-[#080705]/80" />
+                </div>>
 
                                 {/* Main Navbar */}
-                <nav className="relative mx-auto flex h-[75px] max-w-[1450px] items-center justify-between px-6 nav-enter before:pointer-events-none before:absolute before:inset-x-6 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#D7B36B]/20 before:to-transparent lg:px-12">
+                <nav className="relative z-10 mx-auto flex h-[75px] max-w-[1450px] items-center justify-between px-6 nav-enter before:pointer-events-none before:absolute before:inset-x-6 before:bottom-0 before:h-px before:bg-gradient-to-r before:from-transparent before:via-[#D7B36B]/20 before:to-transparent lg:px-12">
 
                     {/* Logo */}
                     <a href="/" aria-label="Eman Jewelers home" className="group relative shrink-0">
@@ -177,7 +188,7 @@ export default function Nav() {
                             <a href="/cart" aria-label={`Shopping bag, ${cartCount} items`} title="Shopping bag" className={`${iconCss} relative`}><ShoppingBag size={21} strokeWidth={1.6}/>{cartCount > 0 && <span className="absolute -right-2 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-[#F1C965] px-1 text-[9px] font-bold text-[#17130D]">{cartCount}</span>}</a>
                             <button
                                 type="button"
-                                onClick={() => setSearchOpen(!searchOpen)}
+                                onClick={() => { setSearchOpen(!searchOpen); setSearchQuery(""); }}
                                 aria-label="Search"
                                 aria-expanded={searchOpen}
                                 className={iconCss}
@@ -239,12 +250,14 @@ export default function Nav() {
 
                             <input
                                 type="search"
-                                placeholder="Search exquisite jewellery..."
+                                value={searchQuery}
+                                onChange={event => setSearchQuery(event.target.value)}
+                                placeholder="Search by name, category or detail..."
                                 className="w-full bg-transparent outline-none text-[#F1C965] placeholder:text-[#BB7B24]/60"
                             />
 
                             <button
-                                onClick={() => setSearchOpen(false)}
+                                onClick={() => { setSearchOpen(false); setSearchQuery(""); }}
                                 className="text-[#F1C965] hover:text-white transition-colors"
                                 aria-label="Close search"
                             >
@@ -252,6 +265,13 @@ export default function Nav() {
                             </button>
                         </div>
                     </div>
+                    {searchQuery.trim() && <div className="max-w-[1450px] mx-auto px-6 lg:px-12 pb-4">
+                        <div className="overflow-hidden rounded-xl border border-[#BB7B24]/30 bg-[#100D08]/95 shadow-xl backdrop-blur-xl">
+                            {searchResults.length ? searchResults.map(product => <a key={product.id} href={"/product/" + product.id} onClick={() => { setSearchOpen(false); setSearchQuery(""); }} className="flex items-center justify-between border-b border-[#D7B36B]/10 px-5 py-3 text-sm text-[#FFF1B8] last:border-0 hover:bg-[#F1C965]/10">
+                                <span>{product.name}<small className="ml-3 text-[10px] uppercase tracking-widest text-[#BCA477]">{product.category || "Jewellery"}</small></span><ArrowUpRight size={16} className="text-[#D7B36B]" />
+                            </a>) : <p className="px-5 py-4 text-center text-xs text-[#BCA477]">No matching jewellery found.</p>}
+                        </div>
+                    </div>}
                 )}
 
                 
