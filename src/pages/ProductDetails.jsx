@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowLeft, Heart, Minus, Plus, Share2, ShieldCheck, Truck, ShoppingBag } from "lucide-react";
 import { useShop } from "../context/ShopContext";
@@ -20,6 +20,48 @@ export default function ProductDetails({ productId }) {
   const cartLine = product ? cart.find(item => String(item.id) === String(product.id)) : undefined;
   const isWishlisted = product ? wishlist.some(id => String(id) === String(product.id)) : false;
   const total = useMemo(() => (product?.price || 0) * quantity, [product, quantity]);
+  useEffect(() => {
+    if (!product) return;
+    const title = `${product.name} | Eman Jewelers`;
+    const description = String(product.description || `Discover ${product.name} at Eman Jewelers.`).replace(/\\s+/g, " ").slice(0, 155);
+    document.title = title;
+    const setMeta = (selector, attribute, value) => {
+      let element = document.querySelector(selector);
+      if (!element) {
+        element = document.createElement("meta");
+        element.setAttribute(attribute, selector.includes("property=") ? selector.match(/property="([^"]+)"/)[1] : selector.match(/name="([^"]+)"/)[1]);
+        document.head.appendChild(element);
+      }
+      element.content = value;
+    };
+    setMeta('meta[name="description"]', "name", description);
+    setMeta('meta[property="og:title"]', "property", title);
+    setMeta('meta[property="og:description"]', "property", description);
+    setMeta('meta[property="og:type"]', "property", "product");
+    setMeta('meta[property="og:image"]', "property", product.image || "");
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }
+    canonical.href = `https://emanjewelers.vercel.app/product/${product.id}`;
+    let schema = document.getElementById("product-jsonld");
+    if (!schema) { schema = document.createElement("script"); schema.id = "product-jsonld"; schema.type = "application/ld+json"; document.head.appendChild(schema); }
+    schema.textContent = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Product",
+      name: product.name,
+      description,
+      image: product.image ? [product.image] : undefined,
+      category: product.category,
+      offers: {
+        "@type": "Offer",
+        priceCurrency: "PKR",
+        price: Number(product.price || 0),
+        availability: "https://schema.org/InStock",
+        url: canonical.href
+      }
+    });
+    return () => { document.getElementById("product-jsonld")?.remove(); };
+  }, [product]);
+
 
   const handleOrder = async () => {
     if (!user) { window.location.assign("/login"); return; }
