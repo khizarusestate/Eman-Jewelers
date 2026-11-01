@@ -34,7 +34,7 @@ function AppContent() {
       "/cart": { title: "Shopping Bag | Eman Jewelers", description: "Review your Eman Jewelers shopping bag.", index: false },
       "/wishlist": { title: "Wishlist | Eman Jewelers", description: "View your saved jewellery at Eman Jewelers.", index: false }
     };
-    const productRoute = /^\\/product\\/[a-f0-9]{24}$/.test(path);
+    const productRoute = /^\/product\/[a-f0-9]{24}$/.test(path);
     const meta = routeMeta[path] || (productRoute
       ? { title: "Jewellery Piece | Eman Jewelers", description: "Explore this jewellery piece at Eman Jewelers.", index: true }
       : routeMeta["/"]);
