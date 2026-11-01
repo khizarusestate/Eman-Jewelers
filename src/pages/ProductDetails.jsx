@@ -55,7 +55,6 @@ export default function ProductDetails({ productId }) {
         "@type": "Offer",
         priceCurrency: "PKR",
         price: Number(product.price || 0),
-        availability: "https://schema.org/InStock",
         url: canonical.href
       }
     });
