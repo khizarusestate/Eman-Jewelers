@@ -240,6 +240,7 @@ export default function Nav() {
 
                 {/* Search Panel */}
                 {searchOpen && (
+                    <>
                     <div className="search-reveal max-w-[1450px] mx-auto px-6 lg:px-12 pb-5">
                         <div className="flex items-center gap-4 border border-[#BB7B24]/40 rounded-xl px-5 py-3 bg-[#080808]/90 shadow-[0_5px_25px_rgba(187,123,36,0.12)]">
 
