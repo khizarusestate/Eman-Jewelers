@@ -31,12 +31,12 @@ export default function Cart() {
         `Phone: ${delivery.phone}`,
         `Address: ${delivery.address}, ${delivery.city}, ${delivery.country}`,
         "Please confirm my order and delivery."
-      ].join("\\n");
+      ].join("\n");
       localStorage.setItem("eman-cart-v1", "[]");
       window.dispatchEvent(new Event("eman-cart-cleared"));
-      toast("Order saved in your account and admin panel. Opening WhatsApp…", "success");
-      window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
-      window.location.assign("/account");
+      toast("Order saved. Opening WhatsApp…", "success");
+      const whatsappUrl = `https://wa.me/923177348178?text=${encodeURIComponent(message)}`;
+      window.location.href = whatsappUrl;
     } catch (error) { toast(error.message, "error"); }
     finally { setBusy(false); }
   };
