@@ -17,7 +17,7 @@ import { CatalogProvider } from "./context/CatalogContext";
 
 const normalizePath = pathname => pathname.replace(/\/+$/, "") || "/";
 const ROUTES = new Set(["/", "/about", "/login", "/register", "/account", "/cart", "/wishlist"]);
-const isKnownRoute = pathname => ROUTES.has(pathname) || /^\/product\/\d+$/.test(pathname);
+const isKnownRoute = pathname => ROUTES.has(pathname) || /^\/product\/[a-f0-9]{24}$/.test(pathname);
 
 function AppContent() {
   const [path, setPath] = useState(() => normalizePath(window.location.pathname));
