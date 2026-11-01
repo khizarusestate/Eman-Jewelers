@@ -82,10 +82,9 @@ export default function Collection() {
         </motion.div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#B98536]/25 pt-7 sm:mt-16 sm:flex-row">
-          <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#877A65] sm:text-left">Showing {shown.length} of {filtered.length} curated pieces <span className="mx-2 text-[#B98536]">✦</span> Illustrative data</p>
+          <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#877A65] sm:text-left">Showing {shown.length} of {filtered.length} curated pieces</p>
           <button type="button" onClick={() => setShowAll((value) => !value)} className="inline-flex min-h-12 items-center gap-3 border border-[#9B7B46]/55 px-6 py-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#4B3920] transition-all duration-300 hover:border-[#17130D] hover:bg-[#17130D] hover:text-[#F8E9BE]">{showAll ? "Show featured pieces" : "View all pieces"}</button>
         </div>
-        <p className="mt-8 text-center text-[10px] leading-5 text-[#958A79]">Preview collection · Product availability and pricing will be updated soon.</p>
         <AnimatePresence>{cartMessage && <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 8 }} className="fixed bottom-5 left-1/2 z-50 -translate-x-1/2 border border-[#B98536]/40 bg-[#17130D] px-5 py-3 text-xs text-[#F8E9BE] shadow-2xl">Added {cartMessage} to your bag.<button type="button" onClick={() => setCartMessage("")} className="ml-4 underline underline-offset-4">Dismiss</button></motion.div>}</AnimatePresence>
       </div>
     </section>
